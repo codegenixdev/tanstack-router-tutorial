@@ -22,6 +22,7 @@ export const Route = createFileRoute("/products/search")({
 });
 
 function RouteComponent() {
+  // show also an example o getRouterApi
   const { filter, page, sort } = Route.useSearch();
   const [filterInput, setFilterInput] = useState(filter);
   const [pageInput, setPageInput] = useState(page.toString());
