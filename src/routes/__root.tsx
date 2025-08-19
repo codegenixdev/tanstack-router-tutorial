@@ -13,6 +13,7 @@ function RootComponent() {
       <div className="space-x-2">
         <NavLink to="/contact-us">Contact us</NavLink>
         <NavLink to="/about">About us</NavLink>
+        <NavLink to="/login">Login</NavLink>
       </div>
       {/* <CustomLink to="/contact-us" hash="section-1">
         Foo
