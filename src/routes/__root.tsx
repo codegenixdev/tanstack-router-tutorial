@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavLink } from "./-components/nav-link";
@@ -9,11 +8,12 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <React.Fragment>
+    <div className="container mx-auto max-w-xl">
       <div className="space-x-2">
         <NavLink to="/contact-us">Contact us</NavLink>
         <NavLink to="/about">About us</NavLink>
         <NavLink to="/login">Login</NavLink>
+        <NavLink to="/products">Products</NavLink>
       </div>
       {/* <CustomLink to="/contact-us" hash="section-1">
         Foo
@@ -26,6 +26,6 @@ function RootComponent() {
       </Link> */}
       <Outlet />
       <TanStackRouterDevtools />
-    </React.Fragment>
+    </div>
   );
 }

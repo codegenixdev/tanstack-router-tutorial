@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as ProductsRouteRouteImport } from './routes/products/route'
 import { Route as CategoriesRouteRouteImport } from './routes/categories/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
@@ -20,6 +19,7 @@ import { Route as ProductsFeaturedRouteImport } from './routes/products/featured
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
 import { Route as AdminReportsRouteImport } from './routes/admin/reports'
 import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$locale}/blog/route'
+import { Route as ProductsSearchRouteRouteImport } from './routes/products/search/route'
 import { Route as ProductsProductIdRouteRouteImport } from './routes/products/$productId/route'
 import { Route as CategoriesCategoryIdRouteRouteImport } from './routes/categories/$categoryId/route'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories/index'
@@ -50,11 +50,6 @@ const ContactUsRoute = ContactUsRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SearchRouteRoute = SearchRouteRouteImport.update({
-  id: '/search',
-  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRouteRoute = ProductsRouteRouteImport.update({
@@ -93,6 +88,11 @@ const Char123LocaleChar125BlogRouteRoute =
     path: '/{-$locale}/blog',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ProductsSearchRouteRoute = ProductsSearchRouteRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => ProductsRouteRoute,
+} as any)
 const ProductsProductIdRouteRoute = ProductsProductIdRouteRouteImport.update({
   id: '/$productId',
   path: '/$productId',
@@ -187,12 +187,12 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
-  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
   '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
+  '/products/search': typeof ProductsSearchRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -216,12 +216,12 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
-  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
   '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
+  '/products/search': typeof ProductsSearchRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -246,12 +246,12 @@ export interface FileRoutesById {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
-  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
   '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
+  '/products/search': typeof ProductsSearchRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -277,12 +277,12 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
-    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
+    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -306,12 +306,12 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
-    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
+    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -335,12 +335,12 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
-    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
+    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -365,7 +365,6 @@ export interface RootRouteChildren {
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   CategoriesRouteRoute: typeof CategoriesRouteRouteWithChildren
   ProductsRouteRoute: typeof ProductsRouteRouteWithChildren
-  SearchRouteRoute: typeof SearchRouteRoute
   AboutRoute: typeof AboutRoute
   ContactUsRoute: typeof ContactUsRouteWithChildren
   LoginRoute: typeof LoginRoute
@@ -399,13 +398,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -456,6 +448,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/blog'
       preLoaderRoute: typeof Char123LocaleChar125BlogRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/products/search': {
+      id: '/products/search'
+      path: '/search'
+      fullPath: '/products/search'
+      preLoaderRoute: typeof ProductsSearchRouteRouteImport
+      parentRoute: typeof ProductsRouteRoute
     }
     '/products/$productId': {
       id: '/products/$productId'
@@ -633,11 +632,13 @@ const ProductsProductIdRouteRouteWithChildren =
 
 interface ProductsRouteRouteChildren {
   ProductsProductIdRouteRoute: typeof ProductsProductIdRouteRouteWithChildren
+  ProductsSearchRouteRoute: typeof ProductsSearchRouteRoute
   ProductsFeaturedRoute: typeof ProductsFeaturedRoute
 }
 
 const ProductsRouteRouteChildren: ProductsRouteRouteChildren = {
   ProductsProductIdRouteRoute: ProductsProductIdRouteRouteWithChildren,
+  ProductsSearchRouteRoute: ProductsSearchRouteRoute,
   ProductsFeaturedRoute: ProductsFeaturedRoute,
 }
 
@@ -702,7 +703,6 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRouteRoute: AccountRouteRouteWithChildren,
   CategoriesRouteRoute: CategoriesRouteRouteWithChildren,
   ProductsRouteRoute: ProductsRouteRouteWithChildren,
-  SearchRouteRoute: SearchRouteRoute,
   AboutRoute: AboutRoute,
   ContactUsRoute: ContactUsRouteWithChildren,
   LoginRoute: LoginRoute,
