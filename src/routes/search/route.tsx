@@ -16,7 +16,7 @@ const searchSchema = z.object({
 
 type SearchParams = z.infer<typeof searchSchema>;
 
-export const Route = createFileRoute("/products/search")({
+export const Route = createFileRoute("/search")({
   component: RouteComponent,
   validateSearch: searchSchema,
 });
@@ -46,10 +46,7 @@ function RouteComponent() {
             onChange={(e) => setFilterInput(e.target.value)}
           />
         </label>
-        <Link
-          search={getSearchParams({ filter: filterInput })}
-          to="/products/search"
-        >
+        <Link search={getSearchParams({ filter: filterInput })} to="/search">
           Apply Filter
         </Link>
       </div>
@@ -67,7 +64,7 @@ function RouteComponent() {
         <div className="space-x-2 inline">
           <Link
             search={getSearchParams({ page: parseInt(pageInput) || 1 })}
-            to="/products/search"
+            to="/search"
           >
             Go to Page
           </Link>
@@ -75,14 +72,11 @@ function RouteComponent() {
           <Link
             search={getSearchParams({ page: Math.max(1, page - 1) })}
             disabled={page <= 1}
-            to="/products/search"
+            to="/search"
           >
             Previous
           </Link>
-          <Link
-            search={getSearchParams({ page: page + 1 })}
-            to="/products/search"
-          >
+          <Link search={getSearchParams({ page: page + 1 })} to="/search">
             Next
           </Link>
         </div>
@@ -94,7 +88,7 @@ function RouteComponent() {
           <Link
             key={sortOption}
             search={getSearchParams({ sort: sortOption })}
-            to="/products/search"
+            to="/search"
           >
             {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
           </Link>

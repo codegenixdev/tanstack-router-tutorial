@@ -1,28 +1,36 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { getProducts } from "../../lib/mock";
 
 export const Route = createFileRoute("/products")({
   component: RouteComponent,
+  loader: async () => {
+    const products = await getProducts();
+    return { products };
+  },
 });
 
 function RouteComponent() {
+  const { products } = Route.useLoaderData();
   return (
     <div className="space-x-2">
       <div className="space-x-2">
-        <p>Products:</p>
-        <Link to="/products/$productId" params={{ productId: "1" }}>
-          Product 1
-        </Link>
-        <Link to="/products/$productId" params={{ productId: "2" }}>
-          Product 2
-        </Link>
-        <Link to="/products/$productId" params={{ productId: "3" }}>
-          Product 3
-        </Link>
+        <p className="text-2xl font-bold">Products:</p>
+        <div className="grid grid-cols-2 gap-4">
+          {products.map((product) => (
+            <Link
+              className="border border-gray-300 rounded-md p-4"
+              key={product.id}
+              to="/products/$productId"
+              params={{ productId: product.id.toString() }}
+              activeProps={{
+                className: "bg-gray-200",
+              }}
+            >
+              {product.name}
+            </Link>
+          ))}
+        </div>
       </div>
-      <Link className="block" to="/products/featured">
-        Featured
-      </Link>
-      <Link to="/products/search">Search</Link>
       <Outlet />
     </div>
   );

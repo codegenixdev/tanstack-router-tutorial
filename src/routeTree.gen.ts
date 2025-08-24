@@ -12,20 +12,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as ProductsRouteRouteImport } from './routes/products/route'
 import { Route as CategoriesRouteRouteImport } from './routes/categories/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
-import { Route as ProductsFeaturedRouteImport } from './routes/products/featured'
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
 import { Route as AdminReportsRouteImport } from './routes/admin/reports'
 import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$locale}/blog/route'
-import { Route as ProductsSearchRouteRouteImport } from './routes/products/search/route'
 import { Route as ProductsProductIdRouteRouteImport } from './routes/products/$productId/route'
 import { Route as CategoriesCategoryIdRouteRouteImport } from './routes/categories/$categoryId/route'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories/index'
 import { Route as AccountOrdersIndexRouteImport } from './routes/account/orders/index'
 import { Route as AccountFilesIndexRouteImport } from './routes/account/files/index'
-import { Route as ProductsProductIdReviewRouteImport } from './routes/products/$productId/review'
 import { Route as ContactUsCountryCityRouteImport } from './routes/contact-us.$country.$city'
 import { Route as Char123LocaleChar125BlogCategoryIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/route'
 import { Route as CategoriesCategoryIdSubcategoryIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/route'
@@ -36,6 +34,7 @@ import { Route as AdminCategoriesCategoryIdIndexRouteImport } from './routes/adm
 import { Route as AccountOrdersOrderIdIndexRouteImport } from './routes/account/orders/$orderId/index'
 import { Route as AccountFilesSplatIndexRouteImport } from './routes/account/files/$/index'
 import { Route as Char123LocaleChar125BlogCategoryIdProductIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/$productId/route'
+import { Route as CategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/$productId/route'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -50,6 +49,11 @@ const ContactUsRoute = ContactUsRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRouteRoute = SearchRouteRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRouteRoute = ProductsRouteRouteImport.update({
@@ -67,11 +71,6 @@ const AccountRouteRoute = AccountRouteRouteImport.update({
   path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsFeaturedRoute = ProductsFeaturedRouteImport.update({
-  id: '/featured',
-  path: '/featured',
-  getParentRoute: () => ProductsRouteRoute,
-} as any)
 const ContactUsCountryRoute = ContactUsCountryRouteImport.update({
   id: '/$country',
   path: '/$country',
@@ -88,11 +87,6 @@ const Char123LocaleChar125BlogRouteRoute =
     path: '/{-$locale}/blog',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ProductsSearchRouteRoute = ProductsSearchRouteRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => ProductsRouteRoute,
-} as any)
 const ProductsProductIdRouteRoute = ProductsProductIdRouteRouteImport.update({
   id: '/$productId',
   path: '/$productId',
@@ -118,11 +112,6 @@ const AccountFilesIndexRoute = AccountFilesIndexRouteImport.update({
   id: '/files/',
   path: '/files/',
   getParentRoute: () => AccountRouteRoute,
-} as any)
-const ProductsProductIdReviewRoute = ProductsProductIdReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => ProductsProductIdRouteRoute,
 } as any)
 const ContactUsCountryCityRoute = ContactUsCountryCityRouteImport.update({
   id: '/$city',
@@ -182,28 +171,33 @@ const Char123LocaleChar125BlogCategoryIdProductIdRouteRoute =
     path: '/$productId',
     getParentRoute: () => Char123LocaleChar125BlogCategoryIdRouteRoute,
   } as any)
+const CategoriesCategoryIdSubcategoryIdProductIdRouteRoute =
+  CategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport.update({
+    id: '/$productId',
+    path: '/$productId',
+    getParentRoute: () => CategoriesCategoryIdSubcategoryIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
+  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
-  '/products/search': typeof ProductsSearchRouteRoute
+  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
-  '/products/featured': typeof ProductsFeaturedRoute
-  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRoute
+  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/products/$productId/review': typeof ProductsProductIdReviewRoute
   '/account/files': typeof AccountFilesIndexRoute
   '/account/orders': typeof AccountOrdersIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$': typeof AccountFilesSplatIndexRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdIndexRoute
@@ -216,23 +210,22 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
+  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
-  '/products/search': typeof ProductsSearchRouteRoute
+  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
-  '/products/featured': typeof ProductsFeaturedRoute
-  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRoute
+  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/products/$productId/review': typeof ProductsProductIdReviewRoute
   '/account/files': typeof AccountFilesIndexRoute
   '/account/orders': typeof AccountOrdersIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$': typeof AccountFilesSplatIndexRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdIndexRoute
@@ -246,23 +239,22 @@ export interface FileRoutesById {
   '/account': typeof AccountRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/products': typeof ProductsRouteRouteWithChildren
+  '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRouteWithChildren
-  '/products/search': typeof ProductsSearchRouteRoute
+  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
-  '/products/featured': typeof ProductsFeaturedRoute
-  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRoute
+  '/categories/$categoryId/$subcategoryId': typeof CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/products/$productId/review': typeof ProductsProductIdReviewRoute
   '/account/files/': typeof AccountFilesIndexRoute
   '/account/orders/': typeof AccountOrdersIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$/': typeof AccountFilesSplatIndexRoute
   '/account/orders/$orderId/': typeof AccountOrdersOrderIdIndexRoute
@@ -277,23 +269,22 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
+    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
-    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
-    | '/products/featured'
     | '/categories/$categoryId/$subcategoryId'
     | '/{-$locale}/blog/$categoryId'
     | '/contact-us/$country/$city'
-    | '/products/$productId/review'
     | '/account/files'
     | '/account/orders'
     | '/admin/categories'
+    | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$'
     | '/account/orders/$orderId'
@@ -306,23 +297,22 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
+    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
-    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
-    | '/products/featured'
     | '/categories/$categoryId/$subcategoryId'
     | '/{-$locale}/blog/$categoryId'
     | '/contact-us/$country/$city'
-    | '/products/$productId/review'
     | '/account/files'
     | '/account/orders'
     | '/admin/categories'
+    | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$'
     | '/account/orders/$orderId'
@@ -335,23 +325,22 @@ export interface FileRouteTypes {
     | '/account'
     | '/categories'
     | '/products'
+    | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/categories/$categoryId'
     | '/products/$productId'
-    | '/products/search'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
-    | '/products/featured'
     | '/categories/$categoryId/$subcategoryId'
     | '/{-$locale}/blog/$categoryId'
     | '/contact-us/$country/$city'
-    | '/products/$productId/review'
     | '/account/files/'
     | '/account/orders/'
     | '/admin/categories/'
+    | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$/'
     | '/account/orders/$orderId/'
@@ -365,6 +354,7 @@ export interface RootRouteChildren {
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   CategoriesRouteRoute: typeof CategoriesRouteRouteWithChildren
   ProductsRouteRoute: typeof ProductsRouteRouteWithChildren
+  SearchRouteRoute: typeof SearchRouteRoute
   AboutRoute: typeof AboutRoute
   ContactUsRoute: typeof ContactUsRouteWithChildren
   LoginRoute: typeof LoginRoute
@@ -400,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
@@ -421,13 +418,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/featured': {
-      id: '/products/featured'
-      path: '/featured'
-      fullPath: '/products/featured'
-      preLoaderRoute: typeof ProductsFeaturedRouteImport
-      parentRoute: typeof ProductsRouteRoute
-    }
     '/contact-us/$country': {
       id: '/contact-us/$country'
       path: '/$country'
@@ -448,13 +438,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/blog'
       preLoaderRoute: typeof Char123LocaleChar125BlogRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/products/search': {
-      id: '/products/search'
-      path: '/search'
-      fullPath: '/products/search'
-      preLoaderRoute: typeof ProductsSearchRouteRouteImport
-      parentRoute: typeof ProductsRouteRoute
     }
     '/products/$productId': {
       id: '/products/$productId'
@@ -490,13 +473,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/files'
       preLoaderRoute: typeof AccountFilesIndexRouteImport
       parentRoute: typeof AccountRouteRoute
-    }
-    '/products/$productId/review': {
-      id: '/products/$productId/review'
-      path: '/review'
-      fullPath: '/products/$productId/review'
-      preLoaderRoute: typeof ProductsProductIdReviewRouteImport
-      parentRoute: typeof ProductsProductIdRouteRoute
     }
     '/contact-us/$country/$city': {
       id: '/contact-us/$country/$city'
@@ -568,6 +544,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRouteImport
       parentRoute: typeof Char123LocaleChar125BlogCategoryIdRouteRoute
     }
+    '/categories/$categoryId/$subcategoryId/$productId': {
+      id: '/categories/$categoryId/$subcategoryId/$productId'
+      path: '/$productId'
+      fullPath: '/categories/$categoryId/$subcategoryId/$productId'
+      preLoaderRoute: typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport
+      parentRoute: typeof CategoriesCategoryIdSubcategoryIdRouteRoute
+    }
   }
 }
 
@@ -589,14 +572,29 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
   AccountRouteRouteChildren,
 )
 
+interface CategoriesCategoryIdSubcategoryIdRouteRouteChildren {
+  CategoriesCategoryIdSubcategoryIdProductIdRouteRoute: typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
+}
+
+const CategoriesCategoryIdSubcategoryIdRouteRouteChildren: CategoriesCategoryIdSubcategoryIdRouteRouteChildren =
+  {
+    CategoriesCategoryIdSubcategoryIdProductIdRouteRoute:
+      CategoriesCategoryIdSubcategoryIdProductIdRouteRoute,
+  }
+
+const CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren =
+  CategoriesCategoryIdSubcategoryIdRouteRoute._addFileChildren(
+    CategoriesCategoryIdSubcategoryIdRouteRouteChildren,
+  )
+
 interface CategoriesCategoryIdRouteRouteChildren {
-  CategoriesCategoryIdSubcategoryIdRouteRoute: typeof CategoriesCategoryIdSubcategoryIdRouteRoute
+  CategoriesCategoryIdSubcategoryIdRouteRoute: typeof CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
 }
 
 const CategoriesCategoryIdRouteRouteChildren: CategoriesCategoryIdRouteRouteChildren =
   {
     CategoriesCategoryIdSubcategoryIdRouteRoute:
-      CategoriesCategoryIdSubcategoryIdRouteRoute,
+      CategoriesCategoryIdSubcategoryIdRouteRouteWithChildren,
   }
 
 const CategoriesCategoryIdRouteRouteWithChildren =
@@ -616,30 +614,12 @@ const CategoriesRouteRouteWithChildren = CategoriesRouteRoute._addFileChildren(
   CategoriesRouteRouteChildren,
 )
 
-interface ProductsProductIdRouteRouteChildren {
-  ProductsProductIdReviewRoute: typeof ProductsProductIdReviewRoute
-}
-
-const ProductsProductIdRouteRouteChildren: ProductsProductIdRouteRouteChildren =
-  {
-    ProductsProductIdReviewRoute: ProductsProductIdReviewRoute,
-  }
-
-const ProductsProductIdRouteRouteWithChildren =
-  ProductsProductIdRouteRoute._addFileChildren(
-    ProductsProductIdRouteRouteChildren,
-  )
-
 interface ProductsRouteRouteChildren {
-  ProductsProductIdRouteRoute: typeof ProductsProductIdRouteRouteWithChildren
-  ProductsSearchRouteRoute: typeof ProductsSearchRouteRoute
-  ProductsFeaturedRoute: typeof ProductsFeaturedRoute
+  ProductsProductIdRouteRoute: typeof ProductsProductIdRouteRoute
 }
 
 const ProductsRouteRouteChildren: ProductsRouteRouteChildren = {
-  ProductsProductIdRouteRoute: ProductsProductIdRouteRouteWithChildren,
-  ProductsSearchRouteRoute: ProductsSearchRouteRoute,
-  ProductsFeaturedRoute: ProductsFeaturedRoute,
+  ProductsProductIdRouteRoute: ProductsProductIdRouteRoute,
 }
 
 const ProductsRouteRouteWithChildren = ProductsRouteRoute._addFileChildren(
@@ -703,6 +683,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRouteRoute: AccountRouteRouteWithChildren,
   CategoriesRouteRoute: CategoriesRouteRouteWithChildren,
   ProductsRouteRoute: ProductsRouteRouteWithChildren,
+  SearchRouteRoute: SearchRouteRoute,
   AboutRoute: AboutRoute,
   ContactUsRoute: ContactUsRouteWithChildren,
   LoginRoute: LoginRoute,
