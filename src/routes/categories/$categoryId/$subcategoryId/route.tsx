@@ -1,43 +1,46 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { getProductsBySubcategory } from "../../../../lib/mock";
+import { getProducts } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  Outlet,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/categories/$categoryId/$subcategoryId")({
   component: RouteComponent,
   loader: async ({ params: { subcategoryId } }) => {
-    const products = await getProductsBySubcategory(Number(subcategoryId));
+    const products = await getProducts(subcategoryId);
+    if (products.length === 0) {
+      throw notFound();
+    }
     return { products };
   },
 });
 
 function RouteComponent() {
   const { products } = Route.useLoaderData();
+
   return (
-    <div>
-      <div>
-        {products.length === 0 && <div>No products found</div>}
-        <p className="text-2xl font-bold">Products:</p>
-        <div className="grid grid-cols-2 gap-4">
-          {products.map((product) => (
-            <Link
-              key={product.id}
-              to="/categories/$categoryId/$subcategoryId/$productId"
-              params={{
-                productId: product.id.toString(),
-              }}
-              hash="product-details"
-              from="/categories/$categoryId/$subcategoryId"
-              className="border border-gray-300 rounded-md p-4"
-              activeProps={{
-                className: "bg-gray-200",
-              }}
-            >
-              <div>{product.name}</div>
-              <div>{product.price}</div>
-              <div>{product.description.slice(0, 100)}...</div>
-              <div>{product.images[0]}</div>
-            </Link>
-          ))}
-        </div>
+    <div className="space-y-4">
+      <h2 className="heading">Products:</h2>
+      <div className="list">
+        {products.map((product) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "bg-gray-200",
+            }}
+            from="/categories/$categoryId/$subcategoryId"
+            to="/categories/$categoryId/$subcategoryId/$productId"
+            params={{
+              productId: product.id.toString(),
+            }}
+            hash="product-details"
+            key={product.id}
+          >
+            <p className="title">{product.name}</p>
+          </Link>
+        ))}
       </div>
       <Outlet />
     </div>

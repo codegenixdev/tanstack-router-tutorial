@@ -13,14 +13,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
-import { Route as ProductsRouteRouteImport } from './routes/products/route'
 import { Route as CategoriesRouteRouteImport } from './routes/categories/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
 import { Route as AdminReportsRouteImport } from './routes/admin/reports'
 import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$locale}/blog/route'
-import { Route as ProductsProductIdRouteRouteImport } from './routes/products/$productId/route'
 import { Route as CategoriesCategoryIdRouteRouteImport } from './routes/categories/$categoryId/route'
 import { Route as AdminCategoriesRouteRouteImport } from './routes/admin/categories/route'
 import { Route as AccountFilesRouteRouteImport } from './routes/account/files/route'
@@ -54,11 +52,6 @@ const SearchRouteRoute = SearchRouteRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsRouteRoute = ProductsRouteRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CategoriesRouteRoute = CategoriesRouteRouteImport.update({
   id: '/categories',
   path: '/categories',
@@ -90,11 +83,6 @@ const Char123LocaleChar125BlogRouteRoute =
     path: '/{-$locale}/blog',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ProductsProductIdRouteRoute = ProductsProductIdRouteRouteImport.update({
-  id: '/$productId',
-  path: '/$productId',
-  getParentRoute: () => ProductsRouteRoute,
-} as any)
 const CategoriesCategoryIdRouteRoute =
   CategoriesCategoryIdRouteRouteImport.update({
     id: '/$categoryId',
@@ -166,7 +154,6 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
-  '/products': typeof ProductsRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
@@ -174,7 +161,6 @@ export interface FileRoutesByFullPath {
   '/account/files': typeof AccountFilesRouteRouteWithChildren
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -192,14 +178,12 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
-  '/products': typeof ProductsRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -218,7 +202,6 @@ export interface FileRoutesById {
   '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
-  '/products': typeof ProductsRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
@@ -226,7 +209,6 @@ export interface FileRoutesById {
   '/account/files': typeof AccountFilesRouteRouteWithChildren
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
-  '/products/$productId': typeof ProductsProductIdRouteRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -246,7 +228,6 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/categories'
-    | '/products'
     | '/search'
     | '/about'
     | '/contact-us'
@@ -254,7 +235,6 @@ export interface FileRouteTypes {
     | '/account/files'
     | '/admin/categories'
     | '/categories/$categoryId'
-    | '/products/$productId'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -272,14 +252,12 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/categories'
-    | '/products'
     | '/search'
     | '/about'
     | '/contact-us'
     | '/login'
     | '/admin/categories'
     | '/categories/$categoryId'
-    | '/products/$productId'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -297,7 +275,6 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/categories'
-    | '/products'
     | '/search'
     | '/about'
     | '/contact-us'
@@ -305,7 +282,6 @@ export interface FileRouteTypes {
     | '/account/files'
     | '/admin/categories'
     | '/categories/$categoryId'
-    | '/products/$productId'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -324,7 +300,6 @@ export interface RootRouteChildren {
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CategoriesRouteRoute: typeof CategoriesRouteRouteWithChildren
-  ProductsRouteRoute: typeof ProductsRouteRouteWithChildren
   SearchRouteRoute: typeof SearchRouteRoute
   AboutRoute: typeof AboutRoute
   ContactUsRoute: typeof ContactUsRouteWithChildren
@@ -360,13 +335,6 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories': {
@@ -410,13 +378,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/blog'
       preLoaderRoute: typeof Char123LocaleChar125BlogRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/products/$productId': {
-      id: '/products/$productId'
-      path: '/$productId'
-      fullPath: '/products/$productId'
-      preLoaderRoute: typeof ProductsProductIdRouteRouteImport
-      parentRoute: typeof ProductsRouteRoute
     }
     '/categories/$categoryId': {
       id: '/categories/$categoryId'
@@ -599,18 +560,6 @@ const CategoriesRouteRouteWithChildren = CategoriesRouteRoute._addFileChildren(
   CategoriesRouteRouteChildren,
 )
 
-interface ProductsRouteRouteChildren {
-  ProductsProductIdRouteRoute: typeof ProductsProductIdRouteRoute
-}
-
-const ProductsRouteRouteChildren: ProductsRouteRouteChildren = {
-  ProductsProductIdRouteRoute: ProductsProductIdRouteRoute,
-}
-
-const ProductsRouteRouteWithChildren = ProductsRouteRoute._addFileChildren(
-  ProductsRouteRouteChildren,
-)
-
 interface ContactUsCountryRouteChildren {
   ContactUsCountryCityRoute: typeof ContactUsCountryCityRoute
 }
@@ -668,7 +617,6 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRouteRoute: AccountRouteRouteWithChildren,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CategoriesRouteRoute: CategoriesRouteRouteWithChildren,
-  ProductsRouteRoute: ProductsRouteRouteWithChildren,
   SearchRouteRoute: SearchRouteRoute,
   AboutRoute: AboutRoute,
   ContactUsRoute: ContactUsRouteWithChildren,

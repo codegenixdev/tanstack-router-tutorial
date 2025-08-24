@@ -15,20 +15,19 @@ function RouteComponent() {
   const { categories } = Route.useLoaderData();
   return (
     <div>
-      <div className="text-2xl font-bold">Categories:</div>
+      <h2 className="heading">Categories:</h2>
       {categories.map((category) => (
-        <div key={category.id}>
-          <Link
-            to="/categories/$categoryId"
-            params={{ categoryId: category.id.toString() }}
-            className="block p-4 border border-gray-300 rounded-md"
-            activeProps={{
-              className: "bg-gray-200",
-            }}
-          >
-            {category.name}
-          </Link>
-        </div>
+        <Link
+          className="card"
+          activeProps={{
+            className: "active-card",
+          }}
+          to="/categories/$categoryId"
+          params={{ categoryId: category.id }}
+          key={category.id}
+        >
+          <p className="title">{category.name}</p>
+        </Link>
       ))}
       <Outlet />
     </div>
