@@ -5,8 +5,9 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
-const isAuthenticated = true;
-export const Route = createFileRoute("/account")({
+const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+
+export const Route = createFileRoute("/client")({
   component: RouteComponent,
   beforeLoad: async ({ location }) => {
     if (!isAuthenticated) {
@@ -22,9 +23,11 @@ export const Route = createFileRoute("/account")({
 
 function RouteComponent() {
   return (
-    <div>
-      <Link to="/account/files/$">Files</Link>
+    <>
+      <Link className="nav-link" to="/client/files/$">
+        Files
+      </Link>
       <Outlet />
-    </div>
+    </>
   );
 }

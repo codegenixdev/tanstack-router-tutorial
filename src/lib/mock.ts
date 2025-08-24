@@ -16,6 +16,8 @@ type Data = {
           name: string;
           description: string;
           price: number;
+          categoryId: string;
+          subcategoryId: string;
         }[];
       }[];
     }[];
@@ -70,6 +72,8 @@ export const MockData: Data = {
                 description:
                   "Latest flagship smartphone with advanced camera system",
                 price: 999.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat1",
               },
               {
                 id: "prod2",
@@ -77,6 +81,8 @@ export const MockData: Data = {
                 description:
                   "Premium Android smartphone with exceptional battery life",
                 price: 1199.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat1",
               },
             ],
           },
@@ -89,12 +95,16 @@ export const MockData: Data = {
                 name: "MacBook Air M2",
                 description: "Thin and light laptop with powerful performance",
                 price: 1299.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat2",
               },
               {
                 id: "prod4",
                 name: "UltraBook Pro",
                 description: "High-performance laptop for professionals",
                 price: 1499.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat2",
               },
             ],
           },
@@ -108,12 +118,16 @@ export const MockData: Data = {
                 description:
                   "Wireless noise-cancelling headphones with premium sound",
                 price: 349.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat3",
               },
               {
                 id: "prod6",
                 name: "AudioBlast Speaker",
                 description: "Portable Bluetooth speaker with deep bass",
                 price: 129.99,
+                categoryId: "cat1",
+                subcategoryId: "subcat3",
               },
             ],
           },
@@ -132,12 +146,16 @@ export const MockData: Data = {
                 name: "Classic Fit Dress Shirt",
                 description: "Professional dress shirt for formal occasions",
                 price: 59.99,
+                categoryId: "cat2",
+                subcategoryId: "subcat4",
               },
               {
                 id: "prod8",
                 name: "Slim Fit Jeans",
                 description: "Comfortable everyday jeans with modern fit",
                 price: 79.99,
+                categoryId: "cat2",
+                subcategoryId: "subcat4",
               },
             ],
           },
@@ -150,12 +168,16 @@ export const MockData: Data = {
                 name: "Summer Floral Dress",
                 description: "Lightweight floral pattern dress for summer",
                 price: 79.99,
+                categoryId: "cat2",
+                subcategoryId: "subcat5",
               },
               {
                 id: "prod10",
                 name: "Business Blazer",
                 description: "Professional blazer for office wear",
                 price: 129.99,
+                categoryId: "cat2",
+                subcategoryId: "subcat5",
               },
             ],
           },
@@ -174,6 +196,8 @@ export const MockData: Data = {
                 name: "Pro Blender",
                 description: "High-power blender for smoothies and food prep",
                 price: 149.99,
+                categoryId: "cat3",
+                subcategoryId: "subcat6",
               },
               {
                 id: "prod12",
@@ -181,6 +205,8 @@ export const MockData: Data = {
                 description:
                   "Programmable coffee maker with mobile app control",
                 price: 99.99,
+                categoryId: "cat3",
+                subcategoryId: "subcat6",
               },
             ],
           },
@@ -193,12 +219,16 @@ export const MockData: Data = {
                 name: "Ergonomic Office Chair",
                 description: "Comfortable chair with lumbar support",
                 price: 249.99,
+                categoryId: "cat3",
+                subcategoryId: "subcat7",
               },
               {
                 id: "prod14",
                 name: "Modular Sofa",
                 description: "Customizable sofa for modern living rooms",
                 price: 899.99,
+                categoryId: "cat3",
+                subcategoryId: "subcat7",
               },
             ],
           },
@@ -362,6 +392,13 @@ export async function getSubcategory(subcategoryId: string) {
     if (subcategory) return subcategory;
   }
   return undefined;
+}
+
+export async function getCategory(categoryId: string) {
+  await wait();
+  return MockData.ecommerce.categories.find(
+    (category) => category.id === categoryId
+  );
 }
 
 export async function getProducts(subcategoryId: string) {

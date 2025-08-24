@@ -1,21 +1,23 @@
+import { getCities } from "@/lib/mock";
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { countriesAndCities, type Country } from "./-data/countriesAndCities";
 
 export const Route = createFileRoute("/contact-us/$country/$city")({
   component: RouteComponent,
-  loader: ({ params: { country, city } }) => {
-    const cities = countriesAndCities[country as Country];
+  loader: async ({ params: { country, city } }) => {
+    const cities = await getCities(country);
     if (!cities.includes(city)) {
       throw notFound();
     }
+    return { city };
   },
 });
 
 function RouteComponent() {
-  const { city, country } = Route.useParams();
+  const { city } = Route.useLoaderData();
   return (
-    <div>
-      Selected Country & City: {country}, {city}
-    </div>
+    <>
+      <h2 className="heading">Selected City:</h2>
+      <p className="title">{city}</p>
+    </>
   );
 }

@@ -1,46 +1,43 @@
+import { getCities } from "@/lib/mock";
 import {
   createFileRoute,
   Link,
   notFound,
   Outlet,
 } from "@tanstack/react-router";
-import { countriesAndCities, type Country } from "./-data/countriesAndCities";
 
 export const Route = createFileRoute("/contact-us/$country")({
   component: RouteComponent,
   loader: async ({ params: { country } }) => {
-    const cities = countriesAndCities[country as Country];
-    if (!cities) {
+    const cities = await getCities(country);
+    if (cities.length === 0) {
       throw notFound();
     }
-    return cities;
+    return { cities };
   },
 });
 
 function RouteComponent() {
-  const cities = Route.useLoaderData();
-
+  const { cities } = Route.useLoaderData();
   return (
     <>
-      <div className="space-x-2">
-        Cities:{" "}
-        {cities.map((city) => (
-          <Link
-            className="underline"
-            to="/contact-us/$country/$city"
-            activeProps={{
-              className: "bg-green-500",
-            }}
-            from={Route.fullPath}
-            params={{
-              city,
-            }}
-            key={city}
-          >
-            {city}
-          </Link>
-        ))}
-      </div>
+      <h2 className="heading">Cities:</h2>
+      {cities.map((city) => (
+        <Link
+          className="card"
+          activeProps={{
+            className: "bg-green-500",
+          }}
+          from={Route.fullPath}
+          to="/contact-us/$country/$city"
+          params={{
+            city,
+          }}
+          key={city}
+        >
+          <p className="title">{city}</p>
+        </Link>
+      ))}
       <Outlet />
     </>
   );

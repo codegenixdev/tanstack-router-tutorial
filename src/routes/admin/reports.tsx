@@ -11,22 +11,13 @@ export const Route = createFileRoute("/admin/reports")({
 
 function RouteComponent() {
   const { reports } = Route.useLoaderData();
-  const renderReport = (key: string, value: number) => {
-    return (
-      <div className="border border-gray-300 rounded-md p-2">
-        {key}: {value}
-      </div>
-    );
-  };
   return (
     <div className="space-y-2">
       <p className="text-2xl font-bold">Reports:</p>
-      {renderReport("Total Sales", reports.totalSales)}
-      {renderReport("Total Orders", reports.totalOrders)}
-      {renderReport("Total Customers", reports.totalCustomers)}
-      {renderReport("Total Products", reports.totalProducts)}
-      {renderReport("Total Categories", reports.totalCategories)}
-      {renderReport("Total Subcategories", reports.totalSubcategories)}
+      <div className="card">Total Sales: {reports.totalSales}</div>
+      <div className="card">Total Orders: {reports.totalOrders}</div>
+      <div className="card">Total Customers: {reports.totalCustomers}</div>
+      <div className="card">Total Products: {reports.totalProducts}</div>
     </div>
   );
 }

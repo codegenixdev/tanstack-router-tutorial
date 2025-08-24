@@ -25,4 +25,27 @@
   .description {
     @apply text-sm text-gray-500;
   }
+
+  .nav-link {
+    @apply text-green-500;
+  }
+  .active-nav-link {
+    @apply font-bold;
+  }
+
+  .button {
+    @apply bg-green-500 text-white p-2 rounded-md;
+  }
+
+  .input {
+    @apply border border-gray-300 rounded-md p-2;
+  }
+
+  .label {
+    @apply text-sm font-bold;
+  }
+
+  .code {
+    @apply text-sm font-bold bg-gray-100 p-2 rounded-md;
+  }
 }

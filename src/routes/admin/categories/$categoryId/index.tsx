@@ -1,10 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { getCategoryById } from "../../../../lib/mock";
+import { getCategory } from "@/lib/mock";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/categories/$categoryId/")({
   component: RouteComponent,
   loader: async ({ params: { categoryId } }) => {
-    const category = await getCategoryById(Number(categoryId));
+    const category = await getCategory(categoryId);
+    if (!category) {
+      throw notFound();
+    }
     return { category };
   },
 });
@@ -13,10 +16,11 @@ function RouteComponent() {
   const { category } = Route.useLoaderData();
   return (
     <div>
-      <div className="text-2xl font-bold">Category: {category?.name}</div>
-      <div className="text-lg">Description: {category?.description}</div>
-      <div className="text-lg">Slug: {category?.slug}</div>
-      <div className="text-lg">ID: {category?.id}</div>
+      <div className="heading">Category</div>
+      <div className="card">
+        <p className="title">{category?.id}</p>
+        <p className="title">{category?.name}</p>
+      </div>
     </div>
   );
 }

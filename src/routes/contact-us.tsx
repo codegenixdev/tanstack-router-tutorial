@@ -1,29 +1,31 @@
+import { getCountries } from "@/lib/mock";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { countriesAndCities } from "./-data/countriesAndCities";
 
 export const Route = createFileRoute("/contact-us")({
   component: RouteComponent,
+  loader: async () => {
+    const countries = await getCountries();
+    return { countries };
+  },
 });
 
-const countries = Object.keys(countriesAndCities);
-
 function RouteComponent() {
+  const { countries } = Route.useLoaderData();
   return (
     <div>
-      What country are you at?
-      <div className="space-x-2">
-        Countries:{" "}
+      <h2 className="heading">What country are you at?</h2>
+      <div className="list">
         {countries.map((country) => (
           <Link
-            activeProps={{ className: "bg-green-500" }}
-            className="underline"
+            className="card"
+            activeProps={{ className: "active-card" }}
             to="/contact-us/$country"
             params={{
-              country,
+              country: country.name,
             }}
-            key={country}
+            key={country.name}
           >
-            {country}
+            {country.name}
           </Link>
         ))}
       </div>

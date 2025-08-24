@@ -12,29 +12,24 @@ export const Route = createFileRoute("/admin/categories")({
 function RouteComponent() {
   const { categories } = Route.useLoaderData();
   return (
-    <div>
-      <div className="space-y-2">
-        <Link
-          className="border border-gray-300 rounded-md p-2"
-          to="/admin/categories/create"
-        >
-          New Category
-        </Link>
-        <div className="text-2xl font-bold">Categories:</div>
-        <div className="space-x-2">
-          {categories.map((category) => (
-            <Link
-              className="border border-gray-300 rounded-md p-2"
-              to="/admin/categories/$categoryId"
-              params={{ categoryId: category.id.toString() }}
-              key={category.id}
-            >
-              {category.name}
-            </Link>
-          ))}
-        </div>
+    <>
+      <Link className="button" to="/admin/categories/create">
+        New Category
+      </Link>
+      <div className="heading">Categories:</div>
+      <div className="list">
+        {categories.map((category) => (
+          <Link
+            className="card"
+            to="/admin/categories/$categoryId"
+            params={{ categoryId: category.id.toString() }}
+            key={category.id}
+          >
+            <p className="title">{category.name}</p>
+          </Link>
+        ))}
       </div>
       <Outlet />
-    </div>
+    </>
   );
 }

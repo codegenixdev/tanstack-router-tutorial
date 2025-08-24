@@ -11,24 +11,23 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as SearchRouteRouteImport } from './routes/search/route'
+import { Route as ClientRouteRouteImport } from './routes/client/route'
 import { Route as CategoriesRouteRouteImport } from './routes/categories/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
-import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
 import { Route as AdminReportsRouteImport } from './routes/admin/reports'
 import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$locale}/blog/route'
+import { Route as ClientFilesRouteRouteImport } from './routes/client/files/route'
 import { Route as CategoriesCategoryIdRouteRouteImport } from './routes/categories/$categoryId/route'
 import { Route as AdminCategoriesRouteRouteImport } from './routes/admin/categories/route'
-import { Route as AccountFilesRouteRouteImport } from './routes/account/files/route'
-import { Route as AccountFilesIndexRouteImport } from './routes/account/files/index'
+import { Route as ClientFilesIndexRouteImport } from './routes/client/files/index'
 import { Route as ContactUsCountryCityRouteImport } from './routes/contact-us.$country.$city'
 import { Route as AdminCategoriesCreateRouteImport } from './routes/admin/categories_.create'
 import { Route as Char123LocaleChar125BlogCategoryIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/route'
 import { Route as CategoriesCategoryIdSubcategoryIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/route'
+import { Route as ClientFilesSplatIndexRouteImport } from './routes/client/files/$/index'
 import { Route as AdminCategoriesCategoryIdIndexRouteImport } from './routes/admin/categories/$categoryId/index'
-import { Route as AccountFilesSplatIndexRouteImport } from './routes/account/files/$/index'
 import { Route as Char123LocaleChar125BlogCategoryIdPostIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/$postId/route'
 import { Route as CategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/$productId/route'
 
@@ -42,14 +41,14 @@ const ContactUsRoute = ContactUsRouteImport.update({
   path: '/contact-us',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SearchRouteRoute = SearchRouteRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientRouteRoute = ClientRouteRouteImport.update({
+  id: '/client',
+  path: '/client',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesRouteRoute = CategoriesRouteRouteImport.update({
@@ -60,11 +59,6 @@ const CategoriesRouteRoute = CategoriesRouteRouteImport.update({
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountRouteRoute = AccountRouteRouteImport.update({
-  id: '/account',
-  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactUsCountryRoute = ContactUsCountryRouteImport.update({
@@ -83,6 +77,11 @@ const Char123LocaleChar125BlogRouteRoute =
     path: '/{-$locale}/blog',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ClientFilesRouteRoute = ClientFilesRouteRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => ClientRouteRoute,
+} as any)
 const CategoriesCategoryIdRouteRoute =
   CategoriesCategoryIdRouteRouteImport.update({
     id: '/$categoryId',
@@ -94,15 +93,10 @@ const AdminCategoriesRouteRoute = AdminCategoriesRouteRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AccountFilesRouteRoute = AccountFilesRouteRouteImport.update({
-  id: '/files',
-  path: '/files',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
-const AccountFilesIndexRoute = AccountFilesIndexRouteImport.update({
+const ClientFilesIndexRoute = ClientFilesIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AccountFilesRouteRoute,
+  getParentRoute: () => ClientFilesRouteRoute,
 } as any)
 const ContactUsCountryCityRoute = ContactUsCountryCityRouteImport.update({
   id: '/$city',
@@ -126,17 +120,17 @@ const CategoriesCategoryIdSubcategoryIdRouteRoute =
     path: '/$subcategoryId',
     getParentRoute: () => CategoriesCategoryIdRouteRoute,
   } as any)
+const ClientFilesSplatIndexRoute = ClientFilesSplatIndexRouteImport.update({
+  id: '/$/',
+  path: '/$/',
+  getParentRoute: () => ClientFilesRouteRoute,
+} as any)
 const AdminCategoriesCategoryIdIndexRoute =
   AdminCategoriesCategoryIdIndexRouteImport.update({
     id: '/$categoryId/',
     path: '/$categoryId/',
     getParentRoute: () => AdminCategoriesRouteRoute,
   } as any)
-const AccountFilesSplatIndexRoute = AccountFilesSplatIndexRouteImport.update({
-  id: '/$/',
-  path: '/$/',
-  getParentRoute: () => AccountFilesRouteRoute,
-} as any)
 const Char123LocaleChar125BlogCategoryIdPostIdRouteRoute =
   Char123LocaleChar125BlogCategoryIdPostIdRouteRouteImport.update({
     id: '/$postId',
@@ -151,16 +145,15 @@ const CategoriesCategoryIdSubcategoryIdProductIdRouteRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
+  '/client': typeof ClientRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
-  '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
-  '/account/files': typeof AccountFilesRouteRouteWithChildren
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
+  '/client/files': typeof ClientFilesRouteRouteWithChildren
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -168,18 +161,17 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/account/files/': typeof AccountFilesIndexRoute
+  '/client/files/': typeof ClientFilesIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$postId': typeof Char123LocaleChar125BlogCategoryIdPostIdRouteRoute
-  '/account/files/$': typeof AccountFilesSplatIndexRoute
   '/admin/categories/$categoryId': typeof AdminCategoriesCategoryIdIndexRoute
+  '/client/files/$': typeof ClientFilesSplatIndexRoute
 }
 export interface FileRoutesByTo {
-  '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
+  '/client': typeof ClientRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
-  '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
@@ -191,24 +183,23 @@ export interface FileRoutesByTo {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/account/files': typeof AccountFilesIndexRoute
+  '/client/files': typeof ClientFilesIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$postId': typeof Char123LocaleChar125BlogCategoryIdPostIdRouteRoute
-  '/account/files/$': typeof AccountFilesSplatIndexRoute
   '/admin/categories/$categoryId': typeof AdminCategoriesCategoryIdIndexRoute
+  '/client/files/$': typeof ClientFilesSplatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/account': typeof AccountRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
+  '/client': typeof ClientRouteRouteWithChildren
   '/search': typeof SearchRouteRoute
-  '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
   '/login': typeof LoginRoute
-  '/account/files': typeof AccountFilesRouteRouteWithChildren
   '/admin/categories': typeof AdminCategoriesRouteRouteWithChildren
   '/categories/$categoryId': typeof CategoriesCategoryIdRouteRouteWithChildren
+  '/client/files': typeof ClientFilesRouteRouteWithChildren
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogRouteRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
@@ -216,25 +207,24 @@ export interface FileRoutesById {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories_/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
-  '/account/files/': typeof AccountFilesIndexRoute
+  '/client/files/': typeof ClientFilesIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$postId': typeof Char123LocaleChar125BlogCategoryIdPostIdRouteRoute
-  '/account/files/$/': typeof AccountFilesSplatIndexRoute
   '/admin/categories/$categoryId/': typeof AdminCategoriesCategoryIdIndexRoute
+  '/client/files/$/': typeof ClientFilesSplatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/account'
     | '/admin'
     | '/categories'
+    | '/client'
     | '/search'
-    | '/about'
     | '/contact-us'
     | '/login'
-    | '/account/files'
     | '/admin/categories'
     | '/categories/$categoryId'
+    | '/client/files'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -242,18 +232,17 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories/create'
     | '/contact-us/$country/$city'
-    | '/account/files/'
+    | '/client/files/'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$postId'
-    | '/account/files/$'
     | '/admin/categories/$categoryId'
+    | '/client/files/$'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/account'
     | '/admin'
     | '/categories'
+    | '/client'
     | '/search'
-    | '/about'
     | '/contact-us'
     | '/login'
     | '/admin/categories'
@@ -265,23 +254,22 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories/create'
     | '/contact-us/$country/$city'
-    | '/account/files'
+    | '/client/files'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$postId'
-    | '/account/files/$'
     | '/admin/categories/$categoryId'
+    | '/client/files/$'
   id:
     | '__root__'
-    | '/account'
     | '/admin'
     | '/categories'
+    | '/client'
     | '/search'
-    | '/about'
     | '/contact-us'
     | '/login'
-    | '/account/files'
     | '/admin/categories'
     | '/categories/$categoryId'
+    | '/client/files'
     | '/{-$locale}/blog'
     | '/admin/reports'
     | '/contact-us/$country'
@@ -289,19 +277,18 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories_/create'
     | '/contact-us/$country/$city'
-    | '/account/files/'
+    | '/client/files/'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$postId'
-    | '/account/files/$/'
     | '/admin/categories/$categoryId/'
+    | '/client/files/$/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AccountRouteRoute: typeof AccountRouteRouteWithChildren
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CategoriesRouteRoute: typeof CategoriesRouteRouteWithChildren
+  ClientRouteRoute: typeof ClientRouteRouteWithChildren
   SearchRouteRoute: typeof SearchRouteRoute
-  AboutRoute: typeof AboutRoute
   ContactUsRoute: typeof ContactUsRouteWithChildren
   LoginRoute: typeof LoginRoute
   Char123LocaleChar125BlogRouteRoute: typeof Char123LocaleChar125BlogRouteRouteWithChildren
@@ -323,18 +310,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactUsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/search': {
       id: '/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/client': {
+      id: '/client'
+      path: '/client'
+      fullPath: '/client'
+      preLoaderRoute: typeof ClientRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories': {
@@ -349,13 +336,6 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact-us/$country': {
@@ -379,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125BlogRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/client/files': {
+      id: '/client/files'
+      path: '/files'
+      fullPath: '/client/files'
+      preLoaderRoute: typeof ClientFilesRouteRouteImport
+      parentRoute: typeof ClientRouteRoute
+    }
     '/categories/$categoryId': {
       id: '/categories/$categoryId'
       path: '/$categoryId'
@@ -393,19 +380,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/account/files': {
-      id: '/account/files'
-      path: '/files'
-      fullPath: '/account/files'
-      preLoaderRoute: typeof AccountFilesRouteRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
-    '/account/files/': {
-      id: '/account/files/'
+    '/client/files/': {
+      id: '/client/files/'
       path: '/'
-      fullPath: '/account/files/'
-      preLoaderRoute: typeof AccountFilesIndexRouteImport
-      parentRoute: typeof AccountFilesRouteRoute
+      fullPath: '/client/files/'
+      preLoaderRoute: typeof ClientFilesIndexRouteImport
+      parentRoute: typeof ClientFilesRouteRoute
     }
     '/contact-us/$country/$city': {
       id: '/contact-us/$country/$city'
@@ -435,19 +415,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesCategoryIdSubcategoryIdRouteRouteImport
       parentRoute: typeof CategoriesCategoryIdRouteRoute
     }
+    '/client/files/$/': {
+      id: '/client/files/$/'
+      path: '/$'
+      fullPath: '/client/files/$'
+      preLoaderRoute: typeof ClientFilesSplatIndexRouteImport
+      parentRoute: typeof ClientFilesRouteRoute
+    }
     '/admin/categories/$categoryId/': {
       id: '/admin/categories/$categoryId/'
       path: '/$categoryId'
       fullPath: '/admin/categories/$categoryId'
       preLoaderRoute: typeof AdminCategoriesCategoryIdIndexRouteImport
       parentRoute: typeof AdminCategoriesRouteRoute
-    }
-    '/account/files/$/': {
-      id: '/account/files/$/'
-      path: '/$'
-      fullPath: '/account/files/$'
-      preLoaderRoute: typeof AccountFilesSplatIndexRouteImport
-      parentRoute: typeof AccountFilesRouteRoute
     }
     '/{-$locale}/blog/$categoryId/$postId': {
       id: '/{-$locale}/blog/$categoryId/$postId'
@@ -465,31 +445,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface AccountFilesRouteRouteChildren {
-  AccountFilesIndexRoute: typeof AccountFilesIndexRoute
-  AccountFilesSplatIndexRoute: typeof AccountFilesSplatIndexRoute
-}
-
-const AccountFilesRouteRouteChildren: AccountFilesRouteRouteChildren = {
-  AccountFilesIndexRoute: AccountFilesIndexRoute,
-  AccountFilesSplatIndexRoute: AccountFilesSplatIndexRoute,
-}
-
-const AccountFilesRouteRouteWithChildren =
-  AccountFilesRouteRoute._addFileChildren(AccountFilesRouteRouteChildren)
-
-interface AccountRouteRouteChildren {
-  AccountFilesRouteRoute: typeof AccountFilesRouteRouteWithChildren
-}
-
-const AccountRouteRouteChildren: AccountRouteRouteChildren = {
-  AccountFilesRouteRoute: AccountFilesRouteRouteWithChildren,
-}
-
-const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
-  AccountRouteRouteChildren,
-)
 
 interface AdminCategoriesRouteRouteChildren {
   AdminCategoriesCategoryIdIndexRoute: typeof AdminCategoriesCategoryIdIndexRoute
@@ -560,6 +515,31 @@ const CategoriesRouteRouteWithChildren = CategoriesRouteRoute._addFileChildren(
   CategoriesRouteRouteChildren,
 )
 
+interface ClientFilesRouteRouteChildren {
+  ClientFilesIndexRoute: typeof ClientFilesIndexRoute
+  ClientFilesSplatIndexRoute: typeof ClientFilesSplatIndexRoute
+}
+
+const ClientFilesRouteRouteChildren: ClientFilesRouteRouteChildren = {
+  ClientFilesIndexRoute: ClientFilesIndexRoute,
+  ClientFilesSplatIndexRoute: ClientFilesSplatIndexRoute,
+}
+
+const ClientFilesRouteRouteWithChildren =
+  ClientFilesRouteRoute._addFileChildren(ClientFilesRouteRouteChildren)
+
+interface ClientRouteRouteChildren {
+  ClientFilesRouteRoute: typeof ClientFilesRouteRouteWithChildren
+}
+
+const ClientRouteRouteChildren: ClientRouteRouteChildren = {
+  ClientFilesRouteRoute: ClientFilesRouteRouteWithChildren,
+}
+
+const ClientRouteRouteWithChildren = ClientRouteRoute._addFileChildren(
+  ClientRouteRouteChildren,
+)
+
 interface ContactUsCountryRouteChildren {
   ContactUsCountryCityRoute: typeof ContactUsCountryCityRoute
 }
@@ -614,11 +594,10 @@ const Char123LocaleChar125BlogRouteRouteWithChildren =
   )
 
 const rootRouteChildren: RootRouteChildren = {
-  AccountRouteRoute: AccountRouteRouteWithChildren,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CategoriesRouteRoute: CategoriesRouteRouteWithChildren,
+  ClientRouteRoute: ClientRouteRouteWithChildren,
   SearchRouteRoute: SearchRouteRoute,
-  AboutRoute: AboutRoute,
   ContactUsRoute: ContactUsRouteWithChildren,
   LoginRoute: LoginRoute,
   Char123LocaleChar125BlogRouteRoute:

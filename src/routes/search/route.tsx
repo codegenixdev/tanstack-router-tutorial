@@ -1,104 +1,43 @@
+import { searchProducts } from "@/lib/mock";
+import { FilterPanel } from "@/routes/search/-components/filter-panel";
+import { searchSchema } from "@/routes/search/-types/searchSchema";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import z from "zod";
-import { useState } from "react";
-
-const sortOptions = {
-  alphabeticalAsc: "alphabeticalAsc",
-  alphabeticalDesc: "alphabeticalDesc",
-} as const;
-// show that if error, url correctly redirect to catch
-const searchSchema = z.object({
-  page: z.number().default(1).catch(1),
-  filter: z.string().default("").catch(""),
-  sort: z.enum(sortOptions).default("alphabeticalAsc").catch("alphabeticalAsc"),
-});
-
-type SearchParams = z.infer<typeof searchSchema>;
 
 export const Route = createFileRoute("/search")({
   component: RouteComponent,
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ deps: { search } }) => {
-    console.log("loader", search);
+    const products = await searchProducts(search);
+    return { products };
   },
 });
 
 function RouteComponent() {
   // show also an example o getRouterApi
-  const { filter, page, sort } = Route.useSearch();
-  const [filterInput, setFilterInput] = useState(filter);
-  const [pageInput, setPageInput] = useState(page.toString());
-
-  const getSearchParams = (updates: Partial<SearchParams>) => {
-    return {
-      filter: updates.filter !== undefined ? updates.filter : filter,
-      page: updates.page !== undefined ? updates.page : page,
-      sort: updates.sort !== undefined ? updates.sort : sort,
-    };
-  };
+  const { products } = Route.useLoaderData();
 
   return (
-    <div>
-      <div>
-        <label>
-          Filter:
-          <input
-            type="text"
-            value={filterInput}
-            onChange={(e) => setFilterInput(e.target.value)}
-          />
-        </label>
-        <Link search={getSearchParams({ filter: filterInput })} to="/search">
-          Apply Filter
-        </Link>
-      </div>
-
-      <div>
-        <label>
-          Page:
-          <input
-            type="number"
-            min="1"
-            value={pageInput}
-            onChange={(e) => setPageInput(e.target.value)}
-          />
-        </label>
-        <div className="space-x-2 inline">
+    <>
+      <FilterPanel />
+      <div className="list">
+        {products.map((product) => (
           <Link
-            search={getSearchParams({ page: parseInt(pageInput) || 1 })}
-            to="/search"
+            className="card"
+            to="/categories/$categoryId/$subcategoryId/$productId"
+            params={{
+              productId: product.id,
+              categoryId: product.categoryId,
+              subcategoryId: product.subcategoryId,
+            }}
+            key={product.id}
           >
-            Go to Page
-          </Link>
-
-          <Link
-            search={getSearchParams({ page: Math.max(1, page - 1) })}
-            disabled={page <= 1}
-            to="/search"
-          >
-            Previous
-          </Link>
-          <Link search={getSearchParams({ page: page + 1 })} to="/search">
-            Next
-          </Link>
-        </div>
-      </div>
-
-      <div className="space-x-2">
-        <label>Sort:</label>
-        {Object.values(sortOptions).map((sortOption) => (
-          <Link
-            key={sortOption}
-            search={getSearchParams({ sort: sortOption })}
-            to="/search"
-          >
-            {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
+            <p className="title">{product.name}</p>
+            <p className="description">{product.description}</p>
+            <p className="price">{product.price}</p>
           </Link>
         ))}
       </div>
-
-      <pre>{JSON.stringify({ filter, page, sort }, null, 2)}</pre>
-    </div>
+    </>
   );
 }

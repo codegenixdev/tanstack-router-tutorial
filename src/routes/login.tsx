@@ -5,5 +5,17 @@ export const Route = createFileRoute("/login")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/login"!</div>;
+  const navigate = Route.useNavigate();
+  return (
+    <div>
+      <button
+        onClick={() => {
+          localStorage.setItem("isAuthenticated", "true");
+          navigate({ to: "/client" });
+        }}
+      >
+        Authenticate
+      </button>
+    </div>
+  );
 }
