@@ -5,7 +5,7 @@
     @apply text-2xl font-bold;
   }
   .card {
-    @apply border border-gray-300 rounded-md p-4 hover:bg-gray-100;
+    @apply inline-block border border-gray-300 rounded-md p-4 hover:bg-gray-100;
   }
   .active-card {
     @apply bg-gray-200;
@@ -34,7 +34,10 @@
   }
 
   .button {
-    @apply bg-green-500 text-white p-2 rounded-md;
+    @apply bg-green-500 text-white p-2 rounded-md uppercase;
+  }
+  .outlined-button {
+    @apply border border-green-500 text-green-500 p-2 rounded-md uppercase;
   }
 
   .input {

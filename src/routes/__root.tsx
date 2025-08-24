@@ -15,6 +15,7 @@ function RootComponent() {
         <NavLink to="/contact-us">Contact us</NavLink>
         <NavLink to="/{-$locale}/blog">Blog</NavLink>
         <NavLink to="/client">Account</NavLink>
+        <NavLink to="/admin">Admin</NavLink>
 
         <button
           className="button"

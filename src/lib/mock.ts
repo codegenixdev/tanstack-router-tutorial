@@ -239,7 +239,7 @@ export const MockData: Data = {
   blog: {
     en: [
       {
-        id: "blog1",
+        id: "topic1", // Changed from blog1 to topic1
         name: "Technology",
         posts: [
           {
@@ -256,7 +256,7 @@ export const MockData: Data = {
         ],
       },
       {
-        id: "blog2",
+        id: "topic2", // Changed from blog2 to topic2
         name: "Business",
         posts: [
           {
@@ -274,7 +274,7 @@ export const MockData: Data = {
     ],
     fr: [
       {
-        id: "blog1",
+        id: "topic1", // Changed from blog1 to topic1
         name: "Technologie",
         posts: [
           {
@@ -292,7 +292,7 @@ export const MockData: Data = {
         ],
       },
       {
-        id: "blog2",
+        id: "topic2", // Changed from blog2 to topic2
         name: "Affaires",
         posts: [
           {
@@ -311,7 +311,7 @@ export const MockData: Data = {
     ],
     es: [
       {
-        id: "blog1",
+        id: "topic1", // Changed from blog1 to topic1
         name: "Tecnología",
         posts: [
           {
@@ -329,7 +329,7 @@ export const MockData: Data = {
         ],
       },
       {
-        id: "blog2",
+        id: "topic2", // Changed from blog2 to topic2
         name: "Negocios",
         posts: [
           {
@@ -464,6 +464,11 @@ export async function searchProducts(params: {
 export async function getTopics(locale: Locale = "en") {
   await wait();
   return MockData.blog[locale];
+}
+
+export async function getTopic(topicId: string, locale: Locale = "en") {
+  await wait();
+  return MockData.blog[locale].find((topic) => topic.id === topicId);
 }
 
 export async function getPosts(topicId: string, locale: Locale = "en") {

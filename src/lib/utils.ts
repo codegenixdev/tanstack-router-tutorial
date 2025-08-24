@@ -5,7 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getRandomDelay(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export function wait() {
-  const delay = Math.floor(Math.random() * 701) + 300; // random delay between 300ms and 1000ms
+  // const delay = getRandomDelay(3000, 10000);
+  const delay = 2000;
   return new Promise((resolve) => setTimeout(resolve, delay));
 }

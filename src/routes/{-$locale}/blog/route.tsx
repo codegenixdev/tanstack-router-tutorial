@@ -1,10 +1,10 @@
+import { getTopics, LOCALES, type Locale } from "@/lib/mock";
 import {
   createFileRoute,
   Link,
   Outlet,
   redirect,
 } from "@tanstack/react-router";
-import { getBlogCategories, LOCALES, type Locale } from "../../../lib/mock";
 
 export const Route = createFileRoute("/{-$locale}/blog")({
   component: RouteComponent,
@@ -12,43 +12,50 @@ export const Route = createFileRoute("/{-$locale}/blog")({
     if (!["en", "fr", "es"].includes(locale ?? "en")) {
       throw redirect({ to: "/{-$locale}/blog", params: { locale: undefined } });
     }
-    const blogCategories = getBlogCategories(locale as Locale);
-    return { blogCategories };
+    const topics = await getTopics(locale as Locale);
+    return { topics };
   },
+  pendingComponent: () => <div>Topics are loading...</div>,
 });
 
 function RouteComponent() {
-  const { blogCategories } = Route.useLoaderData();
+  const { topics } = Route.useLoaderData();
 
   return (
     <div className="space-y-2">
-      <p>Blog</p>
-      <p>Select your language</p>
+      <h1 className="heading">Blog</h1>
+      <p className="label">Select your language</p>
 
       <div className="space-x-2">
         {LOCALES.map((locale) => (
           <Link
-            className="uppercase border rounded-md p-2"
+            className="outlined-button"
+            activeProps={{ className: "bg-green-500 text-white" }}
             to="/{-$locale}/blog"
             params={{ locale }}
-            activeProps={{ className: "bg-blue-500 text-white" }}
             key={locale}
           >
             {locale}
           </Link>
         ))}
       </div>
-      {blogCategories.map((category) => (
-        <Link
-          className="block p-2 border rounded-md"
-          to="/{-$locale}/blog/$categoryId"
-          params={{ categoryId: category.categoryId.toString() }}
-          key={category.categoryId}
-        >
-          <h1>{category.title}</h1>
-          <p>{category.description}</p>
-        </Link>
-      ))}
+      <h2 className="heading">Topics:</h2>
+      <div className="list">
+        {topics.map((topic) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            to="/{-$locale}/blog/$topicId"
+            params={{ topicId: topic.id.toString() }}
+            key={topic.id}
+          >
+            <p className="title">{topic.name}</p>
+            <p className="description">
+              {topic.posts.map((post) => post.title).join(", ")}
+            </p>
+          </Link>
+        ))}
+      </div>
       <Outlet />
     </div>
   );
