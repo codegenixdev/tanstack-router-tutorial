@@ -328,3 +328,230 @@ export async function getReports() {
     totalSubcategories: 10,
   };
 }
+
+export const LOCALES = ["en", "fr", "es"] as const;
+export type Locale = (typeof LOCALES)[number];
+
+export type BlogPost = {
+  id: number;
+  title: string;
+  description: string;
+  slug: string;
+};
+
+export type BlogCategory = {
+  categoryId: number;
+  title: string;
+  description: string;
+  slug: string;
+  posts: BlogPost[];
+};
+
+export type BlogData = {
+  [key in Locale]: BlogCategory[];
+};
+
+const blog: BlogData = {
+  en: [
+    {
+      categoryId: 1,
+      title: "Technology",
+      description: "Latest tech news and updates",
+      slug: "technology",
+      posts: [
+        {
+          id: 1,
+          title: "The Future of AI",
+          description:
+            "Exploring how artificial intelligence will shape our future",
+          slug: "future-of-ai",
+        },
+        {
+          id: 2,
+          title: "Web Development Trends",
+          description: "Top web development trends to watch this year",
+          slug: "web-development-trends",
+        },
+      ],
+    },
+    {
+      categoryId: 2,
+      title: "Business",
+      description: "Business insights and strategies",
+      slug: "business",
+      posts: [
+        {
+          id: 3,
+          title: "Remote Work Strategies",
+          description: "Effective strategies for managing remote teams",
+          slug: "remote-work-strategies",
+        },
+        {
+          id: 4,
+          title: "Digital Marketing Guide",
+          description: "A comprehensive guide to digital marketing in 2025",
+          slug: "digital-marketing-guide",
+        },
+      ],
+    },
+  ],
+  fr: [
+    {
+      categoryId: 1,
+      title: "Technologie",
+      description: "Dernières nouvelles et mises à jour technologiques",
+      slug: "technologie",
+      posts: [
+        {
+          id: 1,
+          title: "L'Avenir de l'IA",
+          description:
+            "Explorer comment l'intelligence artificielle façonnera notre avenir",
+          slug: "avenir-de-ia",
+        },
+        {
+          id: 2,
+          title: "Tendances du Développement Web",
+          description:
+            "Les principales tendances du développement web à surveiller cette année",
+          slug: "tendances-developpement-web",
+        },
+      ],
+    },
+    {
+      categoryId: 2,
+      title: "Affaires",
+      description: "Perspectives et stratégies commerciales",
+      slug: "affaires",
+      posts: [
+        {
+          id: 3,
+          title: "Stratégies de Travail à Distance",
+          description: "Stratégies efficaces pour gérer des équipes à distance",
+          slug: "strategies-travail-distance",
+        },
+        {
+          id: 4,
+          title: "Guide du Marketing Digital",
+          description: "Un guide complet du marketing digital en 2025",
+          slug: "guide-marketing-digital",
+        },
+      ],
+    },
+  ],
+  es: [
+    {
+      categoryId: 1,
+      title: "Tecnología",
+      description: "Últimas noticias y actualizaciones tecnológicas",
+      slug: "tecnologia",
+      posts: [
+        {
+          id: 1,
+          title: "El Futuro de la IA",
+          description:
+            "Explorando cómo la inteligencia artificial dará forma a nuestro futuro",
+          slug: "futuro-de-ia",
+        },
+        {
+          id: 2,
+          title: "Tendencias de Desarrollo Web",
+          description:
+            "Principales tendencias de desarrollo web para observar este año",
+          slug: "tendencias-desarrollo-web",
+        },
+      ],
+    },
+    {
+      categoryId: 2,
+      title: "Negocios",
+      description: "Perspectivas y estrategias empresariales",
+      slug: "negocios",
+      posts: [
+        {
+          id: 3,
+          title: "Estrategias de Trabajo Remoto",
+          description: "Estrategias efectivas para gestionar equipos remotos",
+          slug: "estrategias-trabajo-remoto",
+        },
+        {
+          id: 4,
+          title: "Guía de Marketing Digital",
+          description: "Una guía completa de marketing digital en 2025",
+          slug: "guia-marketing-digital",
+        },
+      ],
+    },
+  ],
+};
+
+/**
+ * Get all blog categories for a specific locale
+ */
+export function getBlogCategories(locale: Locale = "en"): BlogCategory[] {
+  return blog[locale] || blog.en;
+}
+
+/**
+ * Get all posts from all categories for a specific locale
+ */
+export function getAllBlogPosts(locale: Locale = "en"): BlogPost[] {
+  const categories = getBlogCategories(locale);
+  return categories.flatMap((category) => category.posts);
+}
+
+/**
+ * Get all posts for a specific category
+ */
+export function getBlogPostsByCategory(
+  categoryId: number,
+  locale: Locale = "en"
+): BlogPost[] {
+  const categories = getBlogCategories(locale);
+  const category = categories.find((cat) => cat.categoryId === categoryId);
+  return category?.posts || [];
+}
+
+/**
+ * Get a specific blog post by ID
+ */
+export function getBlogPostById(
+  postId: number,
+  locale: Locale = "en"
+): BlogPost | undefined {
+  const allPosts = getAllBlogPosts(locale);
+  return allPosts.find((post) => post.id === postId);
+}
+
+/**
+ * Get a specific blog category by ID
+ */
+export function getBlogCategoryById(
+  categoryId: number,
+  locale: Locale = "en"
+): BlogCategory | undefined {
+  const categories = getBlogCategories(locale);
+  return categories.find((category) => category.categoryId === categoryId);
+}
+
+/**
+ * Get a specific blog post by slug
+ */
+export function getBlogPostBySlug(
+  slug: string,
+  locale: Locale = "en"
+): BlogPost | undefined {
+  const allPosts = getAllBlogPosts(locale);
+  return allPosts.find((post) => post.slug === slug);
+}
+
+/**
+ * Get a specific blog category by slug
+ */
+export function getBlogCategoryBySlug(
+  slug: string,
+  locale: Locale = "en"
+): BlogCategory | undefined {
+  const categories = getBlogCategories(locale);
+  return categories.find((category) => category.slug === slug);
+}
