@@ -3,15 +3,14 @@ import z from "zod";
 import { useState } from "react";
 
 const sortOptions = {
-  newest: "newest",
-  oldest: "oldest",
-  price: "price",
+  alphabeticalAsc: "alphabeticalAsc",
+  alphabeticalDesc: "alphabeticalDesc",
 } as const;
 // show that if error, url correctly redirect to catch
 const searchSchema = z.object({
   page: z.number().default(1).catch(1),
   filter: z.string().default("").catch(""),
-  sort: z.enum(sortOptions).default("newest").catch("newest"),
+  sort: z.enum(sortOptions).default("alphabeticalAsc").catch("alphabeticalAsc"),
 });
 
 type SearchParams = z.infer<typeof searchSchema>;
