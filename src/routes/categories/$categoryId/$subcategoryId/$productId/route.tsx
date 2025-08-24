@@ -12,6 +12,7 @@ export const Route = createFileRoute(
     }
     return { product };
   },
+  pendingComponent: () => <div>Product is loading...</div>,
 });
 
 function RouteComponent() {

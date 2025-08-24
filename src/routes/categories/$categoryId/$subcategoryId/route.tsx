@@ -15,13 +15,14 @@ export const Route = createFileRoute("/categories/$categoryId/$subcategoryId")({
     }
     return { products };
   },
+  pendingComponent: () => <div>Products are loading...</div>,
 });
 
 function RouteComponent() {
   const { products } = Route.useLoaderData();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <h2 className="heading">Products:</h2>
       <div className="list">
         {products.map((product) => (

@@ -11,6 +11,6 @@ export function getRandomDelay(min: number, max: number): number {
 
 export function wait() {
   // const delay = getRandomDelay(3000, 10000);
-  const delay = 2000;
+  const delay = 0;
   return new Promise((resolve) => setTimeout(resolve, delay));
 }

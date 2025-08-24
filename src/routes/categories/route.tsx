@@ -7,28 +7,30 @@ export const Route = createFileRoute("/categories")({
     const categories = await getCategories();
     return { categories };
   },
-  pendingComponent: () => <div>Loading...</div>,
+  pendingComponent: () => <div>Categories are loading...</div>,
   errorComponent: () => <div>Error...</div>,
 });
 
 function RouteComponent() {
   const { categories } = Route.useLoaderData();
   return (
-    <div>
+    <div className="space-y-2">
       <h2 className="heading">Categories:</h2>
-      {categories.map((category) => (
-        <Link
-          className="card"
-          activeProps={{
-            className: "active-card",
-          }}
-          to="/categories/$categoryId"
-          params={{ categoryId: category.id }}
-          key={category.id}
-        >
-          <p className="title">{category.name}</p>
-        </Link>
-      ))}
+      <div className="list">
+        {categories.map((category) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            to="/categories/$categoryId"
+            params={{ categoryId: category.id }}
+            key={category.id}
+          >
+            <p className="title">{category.name}</p>
+          </Link>
+        ))}
+      </div>
       <Outlet />
     </div>
   );

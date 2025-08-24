@@ -15,6 +15,7 @@ export const Route = createFileRoute("/categories/$categoryId")({
     }
     return { subcategories };
   },
+  pendingComponent: () => <div>Subcategories are loading...</div>,
 });
 
 function RouteComponent() {
@@ -22,20 +23,22 @@ function RouteComponent() {
   return (
     <div>
       <h2 className="heading">Subcategories:</h2>
-      {subcategories.map((subcategory) => (
-        <Link
-          className="card"
-          activeProps={{
-            className: "active-card",
-          }}
-          from="/categories/$categoryId"
-          to="/categories/$categoryId/$subcategoryId"
-          params={{ subcategoryId: subcategory.id }}
-          key={subcategory.id}
-        >
-          {subcategory.name}
-        </Link>
-      ))}
+      <div className="list">
+        {subcategories.map((subcategory) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            from="/categories/$categoryId"
+            to="/categories/$categoryId/$subcategoryId"
+            params={{ subcategoryId: subcategory.id }}
+            key={subcategory.id}
+          >
+            <p className="title">{subcategory.name}</p>
+          </Link>
+        ))}
+      </div>
       <Outlet />
     </div>
   );
