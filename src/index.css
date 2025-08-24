@@ -34,7 +34,7 @@
   }
 
   .button {
-    @apply bg-green-500 text-white p-2 rounded-md uppercase;
+    @apply bg-green-500 text-white p-2 rounded-md uppercase cursor-pointer;
   }
   .outlined-button {
     @apply border border-green-500 text-green-500 p-2 rounded-md uppercase;

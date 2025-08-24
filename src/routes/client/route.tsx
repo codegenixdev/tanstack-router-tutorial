@@ -5,12 +5,12 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
-const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+const isClient = localStorage.getItem("role") === "client";
 
 export const Route = createFileRoute("/client")({
   component: RouteComponent,
   beforeLoad: async ({ location }) => {
-    if (!isAuthenticated) {
+    if (!isClient) {
       throw redirect({
         to: "/login",
         search: {

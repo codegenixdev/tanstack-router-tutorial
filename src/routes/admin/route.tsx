@@ -5,11 +5,11 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
-const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+const isAdmin = localStorage.getItem("role") === "admin";
 export const Route = createFileRoute("/admin")({
   component: RouteComponent,
   beforeLoad: async ({ location }) => {
-    if (!isAuthenticated) {
+    if (!isAdmin) {
       throw redirect({
         to: "/login",
         search: {

@@ -7,6 +7,7 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const navigate = Route.useNavigate();
   return (
     <div className="container mx-auto max-w-xl">
       <div className="space-x-2">
@@ -20,7 +21,8 @@ function RootComponent() {
         <button
           className="button"
           onClick={() => {
-            localStorage.removeItem("isAuthenticated");
+            localStorage.removeItem("role");
+            navigate({ to: "/login" });
           }}
         >
           Sign out
