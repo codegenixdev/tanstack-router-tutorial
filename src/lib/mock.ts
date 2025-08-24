@@ -317,3 +317,14 @@ export async function getCategoryById(
   const categories = await getCategories();
   return categories.find((category) => category.id === categoryId) || null;
 }
+
+export async function getReports() {
+  return {
+    totalSales: 100000,
+    totalOrders: 1000,
+    totalCustomers: 100,
+    totalProducts: 100,
+    totalCategories: 10,
+    totalSubcategories: 10,
+  };
+}

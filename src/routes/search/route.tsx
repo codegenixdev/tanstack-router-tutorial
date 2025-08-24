@@ -19,6 +19,10 @@ type SearchParams = z.infer<typeof searchSchema>;
 export const Route = createFileRoute("/search")({
   component: RouteComponent,
   validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({ search }),
+  loader: async ({ deps: { search } }) => {
+    console.log("loader", search);
+  },
 });
 
 function RouteComponent() {

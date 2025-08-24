@@ -6,5 +6,9 @@ export const Route = createFileRoute("/account/files/$/")({
 
 function RouteComponent() {
   const { _splat } = Route.useParams();
-  return <div>Hello "/account/files/$/"! splat: {_splat}</div>;
+  return (
+    <div>
+      <h1>File: {_splat}</h1>
+    </div>
+  );
 }

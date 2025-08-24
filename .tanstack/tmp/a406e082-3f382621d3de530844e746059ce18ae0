@@ -23,11 +23,16 @@ import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$l
 import { Route as ProductsProductIdRouteRouteImport } from './routes/products/$productId/route'
 import { Route as CategoriesCategoryIdRouteRouteImport } from './routes/categories/$categoryId/route'
 import { Route as AdminCategoriesRouteRouteImport } from './routes/admin/categories/route'
+import { Route as AccountOrdersIndexRouteImport } from './routes/account/orders/index'
+import { Route as AccountFilesIndexRouteImport } from './routes/account/files/index'
 import { Route as ContactUsCountryCityRouteImport } from './routes/contact-us.$country.$city'
 import { Route as AdminCategoriesCreateRouteImport } from './routes/admin/categories_.create'
 import { Route as Char123LocaleChar125BlogCategoryIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/route'
 import { Route as CategoriesCategoryIdSubcategoryIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/route'
+import { Route as AdminProductsCreateIndexRouteImport } from './routes/admin/products/create/index'
+import { Route as AdminProductsProductIdIndexRouteImport } from './routes/admin/products/$productId/index'
 import { Route as AdminCategoriesCategoryIdIndexRouteImport } from './routes/admin/categories/$categoryId/index'
+import { Route as AccountOrdersOrderIdIndexRouteImport } from './routes/account/orders/$orderId/index'
 import { Route as AccountFilesSplatIndexRouteImport } from './routes/account/files/$/index'
 import { Route as Char123LocaleChar125BlogCategoryIdProductIdRouteRouteImport } from './routes/{-$locale}/blog/$categoryId/$productId/route'
 import { Route as CategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport } from './routes/categories/$categoryId/$subcategoryId/$productId/route'
@@ -104,6 +109,16 @@ const AdminCategoriesRouteRoute = AdminCategoriesRouteRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AccountOrdersIndexRoute = AccountOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
+const AccountFilesIndexRoute = AccountFilesIndexRouteImport.update({
+  id: '/files/',
+  path: '/files/',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
 const ContactUsCountryCityRoute = ContactUsCountryCityRouteImport.update({
   id: '/$city',
   path: '/$city',
@@ -126,11 +141,29 @@ const CategoriesCategoryIdSubcategoryIdRouteRoute =
     path: '/$subcategoryId',
     getParentRoute: () => CategoriesCategoryIdRouteRoute,
   } as any)
+const AdminProductsCreateIndexRoute =
+  AdminProductsCreateIndexRouteImport.update({
+    id: '/products/create/',
+    path: '/products/create/',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
+const AdminProductsProductIdIndexRoute =
+  AdminProductsProductIdIndexRouteImport.update({
+    id: '/products/$productId/',
+    path: '/products/$productId/',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminCategoriesCategoryIdIndexRoute =
   AdminCategoriesCategoryIdIndexRouteImport.update({
     id: '/$categoryId/',
     path: '/$categoryId/',
     getParentRoute: () => AdminCategoriesRouteRoute,
+  } as any)
+const AccountOrdersOrderIdIndexRoute =
+  AccountOrdersOrderIdIndexRouteImport.update({
+    id: '/orders/$orderId/',
+    path: '/orders/$orderId/',
+    getParentRoute: () => AccountRouteRoute,
   } as any)
 const AccountFilesSplatIndexRoute = AccountFilesSplatIndexRouteImport.update({
   id: '/files/$/',
@@ -169,10 +202,15 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/account/files': typeof AccountFilesIndexRoute
+  '/account/orders': typeof AccountOrdersIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$': typeof AccountFilesSplatIndexRoute
+  '/account/orders/$orderId': typeof AccountOrdersOrderIdIndexRoute
   '/admin/categories/$categoryId': typeof AdminCategoriesCategoryIdIndexRoute
+  '/admin/products/$productId': typeof AdminProductsProductIdIndexRoute
+  '/admin/products/create': typeof AdminProductsCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/account': typeof AccountRouteRouteWithChildren
@@ -193,10 +231,15 @@ export interface FileRoutesByTo {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/account/files': typeof AccountFilesIndexRoute
+  '/account/orders': typeof AccountOrdersIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$': typeof AccountFilesSplatIndexRoute
+  '/account/orders/$orderId': typeof AccountOrdersOrderIdIndexRoute
   '/admin/categories/$categoryId': typeof AdminCategoriesCategoryIdIndexRoute
+  '/admin/products/$productId': typeof AdminProductsProductIdIndexRoute
+  '/admin/products/create': typeof AdminProductsCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -218,10 +261,15 @@ export interface FileRoutesById {
   '/{-$locale}/blog/$categoryId': typeof Char123LocaleChar125BlogCategoryIdRouteRouteWithChildren
   '/admin/categories_/create': typeof AdminCategoriesCreateRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/account/files/': typeof AccountFilesIndexRoute
+  '/account/orders/': typeof AccountOrdersIndexRoute
   '/categories/$categoryId/$subcategoryId/$productId': typeof CategoriesCategoryIdSubcategoryIdProductIdRouteRoute
   '/{-$locale}/blog/$categoryId/$productId': typeof Char123LocaleChar125BlogCategoryIdProductIdRouteRoute
   '/account/files/$/': typeof AccountFilesSplatIndexRoute
+  '/account/orders/$orderId/': typeof AccountOrdersOrderIdIndexRoute
   '/admin/categories/$categoryId/': typeof AdminCategoriesCategoryIdIndexRoute
+  '/admin/products/$productId/': typeof AdminProductsProductIdIndexRoute
+  '/admin/products/create/': typeof AdminProductsCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -244,10 +292,15 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories/create'
     | '/contact-us/$country/$city'
+    | '/account/files'
+    | '/account/orders'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$'
+    | '/account/orders/$orderId'
     | '/admin/categories/$categoryId'
+    | '/admin/products/$productId'
+    | '/admin/products/create'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/account'
@@ -268,10 +321,15 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories/create'
     | '/contact-us/$country/$city'
+    | '/account/files'
+    | '/account/orders'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$'
+    | '/account/orders/$orderId'
     | '/admin/categories/$categoryId'
+    | '/admin/products/$productId'
+    | '/admin/products/create'
   id:
     | '__root__'
     | '/account'
@@ -292,10 +350,15 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/$categoryId'
     | '/admin/categories_/create'
     | '/contact-us/$country/$city'
+    | '/account/files/'
+    | '/account/orders/'
     | '/categories/$categoryId/$subcategoryId/$productId'
     | '/{-$locale}/blog/$categoryId/$productId'
     | '/account/files/$/'
+    | '/account/orders/$orderId/'
     | '/admin/categories/$categoryId/'
+    | '/admin/products/$productId/'
+    | '/admin/products/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -410,6 +473,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/account/orders/': {
+      id: '/account/orders/'
+      path: '/orders'
+      fullPath: '/account/orders'
+      preLoaderRoute: typeof AccountOrdersIndexRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
+    '/account/files/': {
+      id: '/account/files/'
+      path: '/files'
+      fullPath: '/account/files'
+      preLoaderRoute: typeof AccountFilesIndexRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
     '/contact-us/$country/$city': {
       id: '/contact-us/$country/$city'
       path: '/$city'
@@ -438,12 +515,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesCategoryIdSubcategoryIdRouteRouteImport
       parentRoute: typeof CategoriesCategoryIdRouteRoute
     }
+    '/admin/products/create/': {
+      id: '/admin/products/create/'
+      path: '/products/create'
+      fullPath: '/admin/products/create'
+      preLoaderRoute: typeof AdminProductsCreateIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/products/$productId/': {
+      id: '/admin/products/$productId/'
+      path: '/products/$productId'
+      fullPath: '/admin/products/$productId'
+      preLoaderRoute: typeof AdminProductsProductIdIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/categories/$categoryId/': {
       id: '/admin/categories/$categoryId/'
       path: '/$categoryId'
       fullPath: '/admin/categories/$categoryId'
       preLoaderRoute: typeof AdminCategoriesCategoryIdIndexRouteImport
       parentRoute: typeof AdminCategoriesRouteRoute
+    }
+    '/account/orders/$orderId/': {
+      id: '/account/orders/$orderId/'
+      path: '/orders/$orderId'
+      fullPath: '/account/orders/$orderId'
+      preLoaderRoute: typeof AccountOrdersOrderIdIndexRouteImport
+      parentRoute: typeof AccountRouteRoute
     }
     '/account/files/$/': {
       id: '/account/files/$/'
@@ -470,11 +568,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AccountRouteRouteChildren {
+  AccountFilesIndexRoute: typeof AccountFilesIndexRoute
+  AccountOrdersIndexRoute: typeof AccountOrdersIndexRoute
   AccountFilesSplatIndexRoute: typeof AccountFilesSplatIndexRoute
+  AccountOrdersOrderIdIndexRoute: typeof AccountOrdersOrderIdIndexRoute
 }
 
 const AccountRouteRouteChildren: AccountRouteRouteChildren = {
+  AccountFilesIndexRoute: AccountFilesIndexRoute,
+  AccountOrdersIndexRoute: AccountOrdersIndexRoute,
   AccountFilesSplatIndexRoute: AccountFilesSplatIndexRoute,
+  AccountOrdersOrderIdIndexRoute: AccountOrdersOrderIdIndexRoute,
 }
 
 const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
@@ -496,12 +600,16 @@ interface AdminRouteRouteChildren {
   AdminCategoriesRouteRoute: typeof AdminCategoriesRouteRouteWithChildren
   AdminReportsRoute: typeof AdminReportsRoute
   AdminCategoriesCreateRoute: typeof AdminCategoriesCreateRoute
+  AdminProductsProductIdIndexRoute: typeof AdminProductsProductIdIndexRoute
+  AdminProductsCreateIndexRoute: typeof AdminProductsCreateIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminCategoriesRouteRoute: AdminCategoriesRouteRouteWithChildren,
   AdminReportsRoute: AdminReportsRoute,
   AdminCategoriesCreateRoute: AdminCategoriesCreateRoute,
+  AdminProductsProductIdIndexRoute: AdminProductsProductIdIndexRoute,
+  AdminProductsCreateIndexRoute: AdminProductsCreateIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(

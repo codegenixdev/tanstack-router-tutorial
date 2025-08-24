@@ -16,6 +16,8 @@ function RootComponent() {
         <NavLink to="/products">Products</NavLink>
         <NavLink to="/categories">Categories</NavLink>
         <NavLink to="/search">Search</NavLink>
+        <NavLink to="/admin">Admin</NavLink>
+        <NavLink to="/account">Account</NavLink>
       </div>
       {/* <CustomLink to="/contact-us" hash="section-1">
         Foo
