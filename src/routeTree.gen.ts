@@ -15,6 +15,7 @@ import { Route as SearchRouteRouteImport } from './routes/search/route'
 import { Route as ClientRouteRouteImport } from './routes/client/route'
 import { Route as CategoriesRouteRouteImport } from './routes/categories/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
 import { Route as AdminReportsRouteImport } from './routes/admin/reports'
 import { Route as Char123LocaleChar125BlogRouteRouteImport } from './routes/{-$locale}/blog/route'
@@ -57,6 +58,11 @@ const CategoriesRouteRoute = CategoriesRouteRouteImport.update({
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactUsCountryRoute = ContactUsCountryRouteImport.update({
@@ -133,6 +139,7 @@ const CategoriesCategoryIdSubcategoryIdProductIdRouteRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/client': typeof ClientRouteRouteWithChildren
@@ -154,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/client/files/$': typeof ClientFilesSplatIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/client': typeof ClientRouteRouteWithChildren
@@ -176,6 +184,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/categories': typeof CategoriesRouteRouteWithChildren
   '/client': typeof ClientRouteRouteWithChildren
@@ -199,6 +208,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/admin'
     | '/categories'
     | '/client'
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/client/files/$'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/admin'
     | '/categories'
     | '/client'
@@ -241,6 +252,7 @@ export interface FileRouteTypes {
     | '/client/files/$'
   id:
     | '__root__'
+    | '/'
     | '/admin'
     | '/categories'
     | '/client'
@@ -263,6 +275,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   CategoriesRouteRoute: typeof CategoriesRouteRouteWithChildren
   ClientRouteRoute: typeof ClientRouteRouteWithChildren
@@ -314,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact-us/$country': {
@@ -545,6 +565,7 @@ const Char123LocaleChar125BlogRouteRouteWithChildren =
   )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   CategoriesRouteRoute: CategoriesRouteRouteWithChildren,
   ClientRouteRoute: ClientRouteRouteWithChildren,

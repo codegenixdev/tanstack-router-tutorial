@@ -2,6 +2,7 @@ import {
   Outlet,
   // createRootRoute,
   createRootRouteWithContext,
+  useLocation,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavLink } from "./-components/nav-link";
@@ -28,6 +29,7 @@ function RootComponent() {
   const { logout, isAuthenticated, isAdmin, isClient } =
     Route.useRouteContext();
   const navigate = Route.useNavigate();
+  const location = useLocation();
   return (
     <div className="container mx-auto max-w-xl">
       <div className="space-x-2">
@@ -42,7 +44,7 @@ function RootComponent() {
             className="button"
             onClick={() => {
               logout();
-              navigate({ to: "/login" });
+              navigate({ to: "/login", search: { redirect: location.href } });
             }}
           >
             Sign out

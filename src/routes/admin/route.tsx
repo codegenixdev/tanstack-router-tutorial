@@ -15,6 +15,10 @@ export const Route = createFileRoute("/admin")({
           redirect: location.href,
         },
       });
+    } else if (!context.isAdmin) {
+      throw redirect({
+        to: "/client",
+      });
     }
   },
 });

@@ -1,24 +1,27 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
+import z from "zod";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
-  beforeLoad: async ({ location, context }) => {
-    const { isAdmin, isClient, isAuthenticated } = context;
-    console.log("isAuthenticated");
-    if (isAdmin || isClient) {
+  validateSearch: z.object({
+    redirect: z.string().default("/"),
+  }),
+  beforeLoad: async ({ context }) => {
+    const { isAdmin, isAuthenticated } = context;
+    if (isAuthenticated) {
       throw redirect({
-        to: !isAuthenticated ? "/login" : isAdmin ? "/admin" : "/client",
-        search: {
-          redirect: location.href,
-        },
+        to: isAdmin ? "/admin" : "/client",
       });
     }
   },
+  pendingComponent: () => <div>Loading...</div>,
 });
 
 function RouteComponent() {
   const { login } = Route.useRouteContext();
+  const router = useRouter();
+  const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const [username, setUsername] = useState("");
   return (
@@ -37,14 +40,14 @@ function RouteComponent() {
         onClick={() => {
           if (username === "admin") {
             login("admin");
-            navigate({ to: "/admin" });
           } else {
             login("client");
-            navigate({ to: "/client" });
           }
+          router.invalidate();
+          navigate({ to: search.redirect });
         }}
       >
-        Authenticate
+        Login
       </button>
     </form>
   );

@@ -8,6 +8,11 @@ import {
 
 export const Route = createFileRoute("/{-$locale}/blog")({
   component: RouteComponent,
+  beforeLoad: async ({ context, location }) => {
+    if (!context.isAuthenticated) {
+      throw redirect({ to: "/login", search: { redirect: location.href } });
+    }
+  },
   loader: async ({ params: { locale } }) => {
     if (!["en", "fr", "es"].includes(locale ?? "en")) {
       throw redirect({ to: "/{-$locale}/blog", params: { locale: undefined } });
@@ -20,6 +25,7 @@ export const Route = createFileRoute("/{-$locale}/blog")({
 
 function RouteComponent() {
   const { topics } = Route.useLoaderData();
+  const { locale } = Route.useParams();
 
   return (
     <div className="space-y-2">
@@ -27,15 +33,15 @@ function RouteComponent() {
       <p className="label">Select your language</p>
 
       <div className="space-x-2">
-        {LOCALES.map((locale) => (
+        {LOCALES.map((item) => (
           <Link
-            className="outlined-button"
+            className={`outlined-button ${!locale && item === "en" ? "bg-green-500 text-white" : ""}`}
             activeProps={{ className: "bg-green-500 text-white" }}
             to="/{-$locale}/blog"
-            params={{ locale }}
-            key={locale}
+            params={{ locale: item }}
+            key={item}
           >
-            {locale}
+            {item}
           </Link>
         ))}
       </div>
