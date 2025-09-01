@@ -153,6 +153,8 @@ function App() {
 export default App;
 ```
 
+create /routes/about.tsx & /routes/index.tsx
+
 ```tsx __root.tsx
 import * as React from "react";
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
@@ -735,4 +737,129 @@ export async function getCities(countryName: string) {
 }
 ```
 
-routes/index.tsx & routes/about.tsx and show
+create contact-us.tsx and contact-us.$country.tsx and contact-us.$country.$city.tsx
+
+```tsx contact-us.tsx
+import { getCountries } from "@/lib/mock";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/contact-us")({
+  component: RouteComponent,
+  loader: async () => {
+    const countries = await getCountries();
+    return { countries };
+  },
+  pendingComponent: () => <div>Countries are loading...</div>,
+});
+
+function RouteComponent() {
+  const { countries } = Route.useLoaderData();
+  return (
+    <div className="space-y-3">
+      <h2 className="heading">What country are you at?</h2>
+      <div className="list">
+        {countries.map((country) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            to="/contact-us/$country"
+            params={{
+              country: country.name,
+            }}
+            key={country.name}
+          >
+            <p className="title">{country.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx contact-us.$country.tsx
+import { getCities } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  Outlet,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/contact-us/$country")({
+  component: RouteComponent,
+  loader: async ({ params: { country } }) => {
+    const cities = await getCities(country);
+    if (cities.length === 0) {
+      throw notFound();
+    }
+    return { cities };
+  },
+  pendingComponent: () => <div>Cities are loading...</div>,
+});
+
+function RouteComponent() {
+  const { cities } = Route.useLoaderData();
+  return (
+    <div className="space-y-3">
+      <h2 className="heading">Cities:</h2>
+      <div className="list">
+        {cities.map((city) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            from={Route.fullPath}
+            to="/contact-us/$country/$city"
+            params={{
+              city,
+            }}
+            key={city}
+          >
+            <p className="title">{city}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+add start and end console log for $country loader then inside contact-us add preload="intent" and show when hover what happens and also show at app.tsx that can be globally config
+
+```tsx $city.tsx
+import { getCities } from "@/lib/mock";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/contact-us/$country/$city")({
+  component: RouteComponent,
+  loader: async ({ params: { country, city } }) => {
+    const cities = await getCities(country);
+    if (!cities.includes(city)) {
+      throw notFound();
+    }
+    return { city };
+  },
+  pendingComponent: () => <div>City is loading...</div>,
+});
+
+function RouteComponent() {
+  const { city } = Route.useLoaderData();
+
+  return (
+    <>
+      <h2 className="heading">Selected City:</h2>
+      <p className="title">{city}</p>
+    </>
+  );
+}
+```
+
+if notice, there is no loading because delay is 1s, increase to 3s and show that loadings are shown
+
+add defaultPendingMs: 0, to default config and explain then change 3000 to 1000 on wait function
+
+tell about parallel fetching

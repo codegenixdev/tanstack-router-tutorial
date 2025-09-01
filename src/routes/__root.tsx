@@ -11,6 +11,7 @@ function RootComponent() {
     <React.Fragment>
       <NavLink to="/">Main Page</NavLink>
       <NavLink to="/about">About Page</NavLink>
+      <NavLink to="/contact-us">Contact Us</NavLink>
 
       <Outlet />
     </React.Fragment>

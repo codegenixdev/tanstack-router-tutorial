@@ -9,9 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
+import { Route as ContactUsCountryCityRouteImport } from './routes/contact-us.$country.$city'
 
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -22,35 +30,78 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactUsCountryRoute = ContactUsCountryRouteImport.update({
+  id: '/$country',
+  path: '/$country',
+  getParentRoute: () => ContactUsRoute,
+} as any)
+const ContactUsCountryCityRoute = ContactUsCountryCityRouteImport.update({
+  id: '/$city',
+  path: '/$city',
+  getParentRoute: () => ContactUsCountryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact-us': typeof ContactUsRouteWithChildren
+  '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact-us': typeof ContactUsRouteWithChildren
+  '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact-us': typeof ContactUsRouteWithChildren
+  '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact-us'
+    | '/contact-us/$country'
+    | '/contact-us/$country/$city'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/contact-us'
+    | '/contact-us/$country'
+    | '/contact-us/$country/$city'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact-us'
+    | '/contact-us/$country'
+    | '/contact-us/$country/$city'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactUsRoute: typeof ContactUsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -65,12 +116,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact-us/$country': {
+      id: '/contact-us/$country'
+      path: '/$country'
+      fullPath: '/contact-us/$country'
+      preLoaderRoute: typeof ContactUsCountryRouteImport
+      parentRoute: typeof ContactUsRoute
+    }
+    '/contact-us/$country/$city': {
+      id: '/contact-us/$country/$city'
+      path: '/$city'
+      fullPath: '/contact-us/$country/$city'
+      preLoaderRoute: typeof ContactUsCountryCityRouteImport
+      parentRoute: typeof ContactUsCountryRoute
+    }
   }
 }
+
+interface ContactUsCountryRouteChildren {
+  ContactUsCountryCityRoute: typeof ContactUsCountryCityRoute
+}
+
+const ContactUsCountryRouteChildren: ContactUsCountryRouteChildren = {
+  ContactUsCountryCityRoute: ContactUsCountryCityRoute,
+}
+
+const ContactUsCountryRouteWithChildren =
+  ContactUsCountryRoute._addFileChildren(ContactUsCountryRouteChildren)
+
+interface ContactUsRouteChildren {
+  ContactUsCountryRoute: typeof ContactUsCountryRouteWithChildren
+}
+
+const ContactUsRouteChildren: ContactUsRouteChildren = {
+  ContactUsCountryRoute: ContactUsCountryRouteWithChildren,
+}
+
+const ContactUsRouteWithChildren = ContactUsRoute._addFileChildren(
+  ContactUsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactUsRoute: ContactUsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
