@@ -21,6 +21,7 @@ function RouteComponent() {
         {categories.map((category) => (
           <Link
             className="card"
+            activeProps={{ className: "active-card" }}
             to="/admin/categories/$categoryId"
             params={{ categoryId: category.id.toString() }}
             key={category.id}

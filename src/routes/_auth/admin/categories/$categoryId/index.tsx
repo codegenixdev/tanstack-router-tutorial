@@ -15,12 +15,9 @@ export const Route = createFileRoute("/_auth/admin/categories/$categoryId/")({
 function RouteComponent() {
   const { category } = Route.useLoaderData();
   return (
-    <div>
-      <div className="heading">Category</div>
-      <div className="card">
-        <p className="title">{category?.id}</p>
-        <p className="title">{category?.name}</p>
-      </div>
+    <div className="space-y-3">
+      <div className="heading">Category:</div>
+      <p className="title">{category?.name}</p>
     </div>
   );
 }
