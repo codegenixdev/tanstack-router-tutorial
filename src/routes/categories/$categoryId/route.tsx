@@ -21,7 +21,7 @@ export const Route = createFileRoute("/categories/$categoryId")({
 function RouteComponent() {
   const { subcategories } = Route.useLoaderData();
   return (
-    <div>
+    <div className="space-y-3">
       <h2 className="heading">Subcategories:</h2>
       <div className="list">
         {subcategories.map((subcategory) => (

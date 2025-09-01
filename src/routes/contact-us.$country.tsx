@@ -20,25 +20,27 @@ export const Route = createFileRoute("/contact-us/$country")({
 function RouteComponent() {
   const { cities } = Route.useLoaderData();
   return (
-    <>
+    <div className="space-y-3">
       <h2 className="heading">Cities:</h2>
-      {cities.map((city) => (
-        <Link
-          className="card"
-          activeProps={{
-            className: "bg-green-500",
-          }}
-          from={Route.fullPath}
-          to="/contact-us/$country/$city"
-          params={{
-            city,
-          }}
-          key={city}
-        >
-          <p className="title">{city}</p>
-        </Link>
-      ))}
+      <div className="list">
+        {cities.map((city) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            from={Route.fullPath}
+            to="/contact-us/$country/$city"
+            params={{
+              city,
+            }}
+            key={city}
+          >
+            <p className="title">{city}</p>
+          </Link>
+        ))}
+      </div>
       <Outlet />
-    </>
+    </div>
   );
 }

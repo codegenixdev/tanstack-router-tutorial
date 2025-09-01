@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contact-us")({
 function RouteComponent() {
   const { countries } = Route.useLoaderData();
   return (
-    <div>
+    <div className="space-y-3">
       <h2 className="heading">What country are you at?</h2>
       <div className="list">
         {countries.map((country) => (
@@ -25,7 +25,7 @@ function RouteComponent() {
             }}
             key={country.name}
           >
-            {country.name}
+            <p className="title">{country.name}</p>
           </Link>
         ))}
       </div>

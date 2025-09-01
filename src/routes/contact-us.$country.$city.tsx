@@ -14,6 +14,7 @@ export const Route = createFileRoute("/contact-us/$country/$city")({
 
 function RouteComponent() {
   const { city } = Route.useLoaderData();
+
   return (
     <>
       <h2 className="heading">Selected City:</h2>

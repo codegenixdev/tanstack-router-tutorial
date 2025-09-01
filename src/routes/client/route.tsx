@@ -5,12 +5,10 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
-const isClient = localStorage.getItem("role") === "client";
-
 export const Route = createFileRoute("/client")({
   component: RouteComponent,
-  beforeLoad: async ({ location }) => {
-    if (!isClient) {
+  beforeLoad: async ({ location, context }) => {
+    if (!context.isClient) {
       throw redirect({
         to: "/login",
         search: {

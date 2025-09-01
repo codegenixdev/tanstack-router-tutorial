@@ -1,14 +1,14 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 
-const isAdmin = localStorage.getItem("role") === "admin";
-const isClient = localStorage.getItem("role") === "client";
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
-  beforeLoad: async ({ location }) => {
+  beforeLoad: async ({ location, context }) => {
+    const { isAdmin, isClient, isAuthenticated } = context;
+    console.log("isAuthenticated");
     if (isAdmin || isClient) {
       throw redirect({
-        to: isAdmin ? "/admin" : "/client",
+        to: !isAuthenticated ? "/login" : isAdmin ? "/admin" : "/client",
         search: {
           redirect: location.href,
         },
@@ -18,31 +18,34 @@ export const Route = createFileRoute("/login")({
 });
 
 function RouteComponent() {
+  const { login } = Route.useRouteContext();
   const navigate = Route.useNavigate();
   const [username, setUsername] = useState("");
   return (
-    <div>
+    <form>
       <input
         className="input"
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        autoFocus
       />
       <button
         className="button"
+        type="submit"
         onClick={() => {
           if (username === "admin") {
-            localStorage.setItem("role", "admin");
+            login("admin");
             navigate({ to: "/admin" });
           } else {
-            localStorage.setItem("role", "client");
+            login("client");
             navigate({ to: "/client" });
           }
         }}
       >
         Authenticate
       </button>
-    </div>
+    </form>
   );
 }

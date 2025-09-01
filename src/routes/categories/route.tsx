@@ -14,7 +14,7 @@ export const Route = createFileRoute("/categories")({
 function RouteComponent() {
   const { categories } = Route.useLoaderData();
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <h2 className="heading">Categories:</h2>
       <div className="list">
         {categories.map((category) => (

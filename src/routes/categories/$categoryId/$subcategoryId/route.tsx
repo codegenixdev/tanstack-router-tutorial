@@ -22,7 +22,7 @@ function RouteComponent() {
   const { products } = Route.useLoaderData();
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <h2 className="heading">Products:</h2>
       <div className="list">
         {products.map((product) => (

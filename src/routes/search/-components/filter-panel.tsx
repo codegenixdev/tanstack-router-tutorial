@@ -20,7 +20,7 @@ const FilterPanel = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-3">
       <div>
         <label className="label">
           Filter:
@@ -32,7 +32,7 @@ const FilterPanel = () => {
           />
         </label>
         <Link
-          className="button"
+          className="outlined-button"
           to="/search"
           search={getSearchParams({ filter: filterInput })}
         >
@@ -53,7 +53,7 @@ const FilterPanel = () => {
         </label>
         <div className="space-x-2 inline">
           <Link
-            className="button"
+            className="outlined-button"
             to="/search"
             search={getSearchParams({ page: parseInt(pageInput) || 1 })}
           >
@@ -61,7 +61,7 @@ const FilterPanel = () => {
           </Link>
 
           <Link
-            className="button"
+            className="outlined-button"
             to="/search"
             search={getSearchParams({ page: Math.max(1, page - 1) })}
             disabled={page <= 1}
@@ -69,7 +69,7 @@ const FilterPanel = () => {
             Previous
           </Link>
           <Link
-            className="button"
+            className="outlined-button"
             to="/search"
             search={getSearchParams({ page: page + 1 })}
           >
@@ -82,7 +82,7 @@ const FilterPanel = () => {
         <label className="label">Sort:</label>
         {Object.values(sortOptions).map((sortOption) => (
           <Link
-            className="button"
+            className="outlined-button"
             to="/search"
             search={getSearchParams({ sort: sortOption })}
             key={sortOption}
