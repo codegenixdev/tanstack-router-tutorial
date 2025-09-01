@@ -7,11 +7,11 @@ export const Route = createFileRoute("/login")({
   validateSearch: z.object({
     redirect: z.string().default("/"),
   }),
-  beforeLoad: async ({ context }) => {
+  beforeLoad: async ({ context, search }) => {
     const { isAdmin, isAuthenticated } = context;
     if (isAuthenticated) {
       throw redirect({
-        to: isAdmin ? "/admin" : "/client",
+        to: search.redirect || (isAdmin ? "/admin" : "/client"),
       });
     }
   },

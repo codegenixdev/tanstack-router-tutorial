@@ -25,7 +25,6 @@ declare module "@tanstack/react-router" {
 
 function App() {
   const routerContextState = useRouterContextState();
-
   return <RouterProvider router={router} context={routerContextState} />;
 }
 
