@@ -1,4 +1,4 @@
-import { wait } from "./utils";
+import { wait } from "@/lib/utils";
 
 export const LOCALES = ["en", "fr", "es"] as const;
 export type Locale = (typeof LOCALES)[number];

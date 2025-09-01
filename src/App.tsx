@@ -1,21 +1,7 @@
-import { useRouterContextState } from "@/lib/use-router-context-state";
 import { routeTree } from "@/routeTree.gen";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 
-const router = createRouter({
-  routeTree,
-  defaultPreload: "intent",
-  defaultStaleTime: 5000,
-  scrollRestoration: true,
-  context: {
-    role: null,
-    login: () => {},
-    logout: () => {},
-    isAdmin: false,
-    isClient: false,
-    isAuthenticated: false,
-  },
-});
+const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -24,8 +10,7 @@ declare module "@tanstack/react-router" {
 }
 
 function App() {
-  const routerContextState = useRouterContextState();
-  return <RouterProvider router={router} context={routerContextState} />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
