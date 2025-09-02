@@ -5,6 +5,20 @@ refer to devtools
 
 # Script
 
+## intro:
+
+Welcome to the most comprehensive TanStack Router tutorial on YouTube. Today, we’re diving deep into this revolutionary routing solution that’s rapidly gaining popularity in the React ecosystem.
+
+TanStack Router is a modern routing library that puts type safety at its core, offering a developer experience that feels almost magical. Now stable and production-ready, it’s changing how developers approach routing in web applications by catching errors at compile time rather than runtime.
+
+In this tutorial, we’ll build a complete application with nested routes, data loading, authentication, and more - all with full type safety from URL to component.
+
+What sets TanStack Router apart is its unique approach that combines file-based routing convenience with programmatic routing power. You’ll see how its TypeScript integration creates a fully type-safe experience from URL parameters to search queries and route data.
+
+Let’s dive in and explore how this technology can transform your React applications with its elegant API and robust type system.
+
+## tutorial
+
 we setup our tanstack router project manually
 
 ```bash
@@ -178,6 +192,8 @@ function RootComponent() {
   );
 }
 ```
+
+If you’re finding this tutorial helpful so far, please hit that like button to help others discover it too!
 
 ```tsx src/lib/utils.ts
 import { clsx, type ClassValue } from "clsx";
@@ -1267,6 +1283,8 @@ export { FilterPanel };
 
 add search to \_\_root.tsx and show
 
+Quick reminder - if you’re picking up valuable tips, hitting that like button really helps the channel. Thanks for your support!”
+
 add context
 
 ```tsx __root.tsx
@@ -2014,3 +2032,13 @@ function RouteComponent() {
   );
 }
 ```
+
+## outro
+
+That wraps up our TanStack Router tutorial! We’ve covered everything from basic setup to advanced patterns with full type safety throughout.
+
+TanStack Router gives you the best of both worlds: file-based organization with programmatic power, all backed by TypeScript’s robust type system.
+
+If you found this helpful, please hit that like button and subscribe for more technical deep dives. Drop any questions in the comments below.
+
+Thanks for watching!
