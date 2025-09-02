@@ -9,12 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContactUsCountryRouteImport } from './routes/contact-us.$country'
+import { Route as AuthClientRouteRouteImport } from './routes/_auth/client/route'
+import { Route as AuthAdminRouteRouteImport } from './routes/_auth/admin/route'
+import { Route as publicSearchRouteRouteImport } from './routes/(public)/search/route'
+import { Route as publicCategoriesRouteRouteImport } from './routes/(public)/categories/route'
 import { Route as ContactUsCountryCityRouteImport } from './routes/contact-us.$country.$city'
+import { Route as AuthAdminReportsRouteImport } from './routes/_auth/admin/reports'
+import { Route as AuthChar123LocaleChar125BlogRouteRouteImport } from './routes/_auth/{-$locale}/blog/route'
+import { Route as AuthAdminCategoriesRouteRouteImport } from './routes/_auth/admin/categories/route'
+import { Route as publicCategoriesCategoryIdRouteRouteImport } from './routes/(public)/categories/$categoryId/route'
+import { Route as AuthAdminCategoriesCreateRouteImport } from './routes/_auth/admin/categories_.create'
+import { Route as AuthChar123LocaleChar125BlogTopicIdRouteRouteImport } from './routes/_auth/{-$locale}/blog/$topicId/route'
+import { Route as publicCategoriesCategoryIdSubcategoryIdRouteRouteImport } from './routes/(public)/categories/$categoryId/$subcategoryId/route'
+import { Route as AuthClientFilesSplatIndexRouteImport } from './routes/_auth/client/files/$/index'
+import { Route as AuthAdminCategoriesCategoryIdIndexRouteImport } from './routes/_auth/admin/categories/$categoryId/index'
+import { Route as AuthChar123LocaleChar125BlogTopicIdPostIdRouteRouteImport } from './routes/_auth/{-$locale}/blog/$topicId/$postId/route'
+import { Route as publicCategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport } from './routes/(public)/categories/$categoryId/$subcategoryId/$productId/route'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactUsRoute = ContactUsRouteImport.update({
   id: '/contact-us',
   path: '/contact-us',
@@ -23,6 +45,10 @@ const ContactUsRoute = ContactUsRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -35,33 +61,167 @@ const ContactUsCountryRoute = ContactUsCountryRouteImport.update({
   path: '/$country',
   getParentRoute: () => ContactUsRoute,
 } as any)
+const AuthClientRouteRoute = AuthClientRouteRouteImport.update({
+  id: '/client',
+  path: '/client',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAdminRouteRoute = AuthAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const publicSearchRouteRoute = publicSearchRouteRouteImport.update({
+  id: '/(public)/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const publicCategoriesRouteRoute = publicCategoriesRouteRouteImport.update({
+  id: '/(public)/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactUsCountryCityRoute = ContactUsCountryCityRouteImport.update({
   id: '/$city',
   path: '/$city',
   getParentRoute: () => ContactUsCountryRoute,
 } as any)
+const AuthAdminReportsRoute = AuthAdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthAdminRouteRoute,
+} as any)
+const AuthChar123LocaleChar125BlogRouteRoute =
+  AuthChar123LocaleChar125BlogRouteRouteImport.update({
+    id: '/{-$locale}/blog',
+    path: '/{-$locale}/blog',
+    getParentRoute: () => AuthRouteRoute,
+  } as any)
+const AuthAdminCategoriesRouteRoute =
+  AuthAdminCategoriesRouteRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthAdminRouteRoute,
+  } as any)
+const publicCategoriesCategoryIdRouteRoute =
+  publicCategoriesCategoryIdRouteRouteImport.update({
+    id: '/$categoryId',
+    path: '/$categoryId',
+    getParentRoute: () => publicCategoriesRouteRoute,
+  } as any)
+const AuthAdminCategoriesCreateRoute =
+  AuthAdminCategoriesCreateRouteImport.update({
+    id: '/categories_/create',
+    path: '/categories/create',
+    getParentRoute: () => AuthAdminRouteRoute,
+  } as any)
+const AuthChar123LocaleChar125BlogTopicIdRouteRoute =
+  AuthChar123LocaleChar125BlogTopicIdRouteRouteImport.update({
+    id: '/$topicId',
+    path: '/$topicId',
+    getParentRoute: () => AuthChar123LocaleChar125BlogRouteRoute,
+  } as any)
+const publicCategoriesCategoryIdSubcategoryIdRouteRoute =
+  publicCategoriesCategoryIdSubcategoryIdRouteRouteImport.update({
+    id: '/$subcategoryId',
+    path: '/$subcategoryId',
+    getParentRoute: () => publicCategoriesCategoryIdRouteRoute,
+  } as any)
+const AuthClientFilesSplatIndexRoute =
+  AuthClientFilesSplatIndexRouteImport.update({
+    id: '/files/$/',
+    path: '/files/$/',
+    getParentRoute: () => AuthClientRouteRoute,
+  } as any)
+const AuthAdminCategoriesCategoryIdIndexRoute =
+  AuthAdminCategoriesCategoryIdIndexRouteImport.update({
+    id: '/$categoryId/',
+    path: '/$categoryId/',
+    getParentRoute: () => AuthAdminCategoriesRouteRoute,
+  } as any)
+const AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute =
+  AuthChar123LocaleChar125BlogTopicIdPostIdRouteRouteImport.update({
+    id: '/$postId',
+    path: '/$postId',
+    getParentRoute: () => AuthChar123LocaleChar125BlogTopicIdRouteRoute,
+  } as any)
+const publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute =
+  publicCategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport.update({
+    id: '/$productId',
+    path: '/$productId',
+    getParentRoute: () => publicCategoriesCategoryIdSubcategoryIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/categories': typeof publicCategoriesRouteRouteWithChildren
+  '/search': typeof publicSearchRouteRoute
+  '/admin': typeof AuthAdminRouteRouteWithChildren
+  '/client': typeof AuthClientRouteRouteWithChildren
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/categories/$categoryId': typeof publicCategoriesCategoryIdRouteRouteWithChildren
+  '/admin/categories': typeof AuthAdminCategoriesRouteRouteWithChildren
+  '/{-$locale}/blog': typeof AuthChar123LocaleChar125BlogRouteRouteWithChildren
+  '/admin/reports': typeof AuthAdminReportsRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/categories/$categoryId/$subcategoryId': typeof publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
+  '/{-$locale}/blog/$topicId': typeof AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren
+  '/admin/categories/create': typeof AuthAdminCategoriesCreateRoute
+  '/categories/$categoryId/$subcategoryId/$productId': typeof publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute
+  '/{-$locale}/blog/$topicId/$postId': typeof AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute
+  '/admin/categories/$categoryId': typeof AuthAdminCategoriesCategoryIdIndexRoute
+  '/client/files/$': typeof AuthClientFilesSplatIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/categories': typeof publicCategoriesRouteRouteWithChildren
+  '/search': typeof publicSearchRouteRoute
+  '/admin': typeof AuthAdminRouteRouteWithChildren
+  '/client': typeof AuthClientRouteRouteWithChildren
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/categories/$categoryId': typeof publicCategoriesCategoryIdRouteRouteWithChildren
+  '/admin/categories': typeof AuthAdminCategoriesRouteRouteWithChildren
+  '/{-$locale}/blog': typeof AuthChar123LocaleChar125BlogRouteRouteWithChildren
+  '/admin/reports': typeof AuthAdminReportsRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/categories/$categoryId/$subcategoryId': typeof publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
+  '/{-$locale}/blog/$topicId': typeof AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren
+  '/admin/categories/create': typeof AuthAdminCategoriesCreateRoute
+  '/categories/$categoryId/$subcategoryId/$productId': typeof publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute
+  '/{-$locale}/blog/$topicId/$postId': typeof AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute
+  '/admin/categories/$categoryId': typeof AuthAdminCategoriesCategoryIdIndexRoute
+  '/client/files/$': typeof AuthClientFilesSplatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact-us': typeof ContactUsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/(public)/categories': typeof publicCategoriesRouteRouteWithChildren
+  '/(public)/search': typeof publicSearchRouteRoute
+  '/_auth/admin': typeof AuthAdminRouteRouteWithChildren
+  '/_auth/client': typeof AuthClientRouteRouteWithChildren
   '/contact-us/$country': typeof ContactUsCountryRouteWithChildren
+  '/(public)/categories/$categoryId': typeof publicCategoriesCategoryIdRouteRouteWithChildren
+  '/_auth/admin/categories': typeof AuthAdminCategoriesRouteRouteWithChildren
+  '/_auth/{-$locale}/blog': typeof AuthChar123LocaleChar125BlogRouteRouteWithChildren
+  '/_auth/admin/reports': typeof AuthAdminReportsRoute
   '/contact-us/$country/$city': typeof ContactUsCountryCityRoute
+  '/(public)/categories/$categoryId/$subcategoryId': typeof publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
+  '/_auth/{-$locale}/blog/$topicId': typeof AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren
+  '/_auth/admin/categories_/create': typeof AuthAdminCategoriesCreateRoute
+  '/(public)/categories/$categoryId/$subcategoryId/$productId': typeof publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute
+  '/_auth/{-$locale}/blog/$topicId/$postId': typeof AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute
+  '/_auth/admin/categories/$categoryId/': typeof AuthAdminCategoriesCategoryIdIndexRoute
+  '/_auth/client/files/$/': typeof AuthClientFilesSplatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -69,32 +229,92 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact-us'
+    | '/login'
+    | '/categories'
+    | '/search'
+    | '/admin'
+    | '/client'
     | '/contact-us/$country'
+    | '/categories/$categoryId'
+    | '/admin/categories'
+    | '/{-$locale}/blog'
+    | '/admin/reports'
     | '/contact-us/$country/$city'
+    | '/categories/$categoryId/$subcategoryId'
+    | '/{-$locale}/blog/$topicId'
+    | '/admin/categories/create'
+    | '/categories/$categoryId/$subcategoryId/$productId'
+    | '/{-$locale}/blog/$topicId/$postId'
+    | '/admin/categories/$categoryId'
+    | '/client/files/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact-us'
+    | '/login'
+    | '/categories'
+    | '/search'
+    | '/admin'
+    | '/client'
     | '/contact-us/$country'
+    | '/categories/$categoryId'
+    | '/admin/categories'
+    | '/{-$locale}/blog'
+    | '/admin/reports'
     | '/contact-us/$country/$city'
+    | '/categories/$categoryId/$subcategoryId'
+    | '/{-$locale}/blog/$topicId'
+    | '/admin/categories/create'
+    | '/categories/$categoryId/$subcategoryId/$productId'
+    | '/{-$locale}/blog/$topicId/$postId'
+    | '/admin/categories/$categoryId'
+    | '/client/files/$'
   id:
     | '__root__'
     | '/'
+    | '/_auth'
     | '/about'
     | '/contact-us'
+    | '/login'
+    | '/(public)/categories'
+    | '/(public)/search'
+    | '/_auth/admin'
+    | '/_auth/client'
     | '/contact-us/$country'
+    | '/(public)/categories/$categoryId'
+    | '/_auth/admin/categories'
+    | '/_auth/{-$locale}/blog'
+    | '/_auth/admin/reports'
     | '/contact-us/$country/$city'
+    | '/(public)/categories/$categoryId/$subcategoryId'
+    | '/_auth/{-$locale}/blog/$topicId'
+    | '/_auth/admin/categories_/create'
+    | '/(public)/categories/$categoryId/$subcategoryId/$productId'
+    | '/_auth/{-$locale}/blog/$topicId/$postId'
+    | '/_auth/admin/categories/$categoryId/'
+    | '/_auth/client/files/$/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactUsRoute: typeof ContactUsRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  publicCategoriesRouteRoute: typeof publicCategoriesRouteRouteWithChildren
+  publicSearchRouteRoute: typeof publicSearchRouteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact-us': {
       id: '/contact-us'
       path: '/contact-us'
@@ -107,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -123,6 +350,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactUsCountryRouteImport
       parentRoute: typeof ContactUsRoute
     }
+    '/_auth/client': {
+      id: '/_auth/client'
+      path: '/client'
+      fullPath: '/client'
+      preLoaderRoute: typeof AuthClientRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/admin': {
+      id: '/_auth/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthAdminRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/(public)/search': {
+      id: '/(public)/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof publicSearchRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(public)/categories': {
+      id: '/(public)/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof publicCategoriesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact-us/$country/$city': {
       id: '/contact-us/$country/$city'
       path: '/$city'
@@ -130,8 +385,175 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactUsCountryCityRouteImport
       parentRoute: typeof ContactUsCountryRoute
     }
+    '/_auth/admin/reports': {
+      id: '/_auth/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AuthAdminReportsRouteImport
+      parentRoute: typeof AuthAdminRouteRoute
+    }
+    '/_auth/{-$locale}/blog': {
+      id: '/_auth/{-$locale}/blog'
+      path: '/{-$locale}/blog'
+      fullPath: '/{-$locale}/blog'
+      preLoaderRoute: typeof AuthChar123LocaleChar125BlogRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/admin/categories': {
+      id: '/_auth/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthAdminCategoriesRouteRouteImport
+      parentRoute: typeof AuthAdminRouteRoute
+    }
+    '/(public)/categories/$categoryId': {
+      id: '/(public)/categories/$categoryId'
+      path: '/$categoryId'
+      fullPath: '/categories/$categoryId'
+      preLoaderRoute: typeof publicCategoriesCategoryIdRouteRouteImport
+      parentRoute: typeof publicCategoriesRouteRoute
+    }
+    '/_auth/admin/categories_/create': {
+      id: '/_auth/admin/categories_/create'
+      path: '/categories/create'
+      fullPath: '/admin/categories/create'
+      preLoaderRoute: typeof AuthAdminCategoriesCreateRouteImport
+      parentRoute: typeof AuthAdminRouteRoute
+    }
+    '/_auth/{-$locale}/blog/$topicId': {
+      id: '/_auth/{-$locale}/blog/$topicId'
+      path: '/$topicId'
+      fullPath: '/{-$locale}/blog/$topicId'
+      preLoaderRoute: typeof AuthChar123LocaleChar125BlogTopicIdRouteRouteImport
+      parentRoute: typeof AuthChar123LocaleChar125BlogRouteRoute
+    }
+    '/(public)/categories/$categoryId/$subcategoryId': {
+      id: '/(public)/categories/$categoryId/$subcategoryId'
+      path: '/$subcategoryId'
+      fullPath: '/categories/$categoryId/$subcategoryId'
+      preLoaderRoute: typeof publicCategoriesCategoryIdSubcategoryIdRouteRouteImport
+      parentRoute: typeof publicCategoriesCategoryIdRouteRoute
+    }
+    '/_auth/client/files/$/': {
+      id: '/_auth/client/files/$/'
+      path: '/files/$'
+      fullPath: '/client/files/$'
+      preLoaderRoute: typeof AuthClientFilesSplatIndexRouteImport
+      parentRoute: typeof AuthClientRouteRoute
+    }
+    '/_auth/admin/categories/$categoryId/': {
+      id: '/_auth/admin/categories/$categoryId/'
+      path: '/$categoryId'
+      fullPath: '/admin/categories/$categoryId'
+      preLoaderRoute: typeof AuthAdminCategoriesCategoryIdIndexRouteImport
+      parentRoute: typeof AuthAdminCategoriesRouteRoute
+    }
+    '/_auth/{-$locale}/blog/$topicId/$postId': {
+      id: '/_auth/{-$locale}/blog/$topicId/$postId'
+      path: '/$postId'
+      fullPath: '/{-$locale}/blog/$topicId/$postId'
+      preLoaderRoute: typeof AuthChar123LocaleChar125BlogTopicIdPostIdRouteRouteImport
+      parentRoute: typeof AuthChar123LocaleChar125BlogTopicIdRouteRoute
+    }
+    '/(public)/categories/$categoryId/$subcategoryId/$productId': {
+      id: '/(public)/categories/$categoryId/$subcategoryId/$productId'
+      path: '/$productId'
+      fullPath: '/categories/$categoryId/$subcategoryId/$productId'
+      preLoaderRoute: typeof publicCategoriesCategoryIdSubcategoryIdProductIdRouteRouteImport
+      parentRoute: typeof publicCategoriesCategoryIdSubcategoryIdRouteRoute
+    }
   }
 }
+
+interface AuthAdminCategoriesRouteRouteChildren {
+  AuthAdminCategoriesCategoryIdIndexRoute: typeof AuthAdminCategoriesCategoryIdIndexRoute
+}
+
+const AuthAdminCategoriesRouteRouteChildren: AuthAdminCategoriesRouteRouteChildren =
+  {
+    AuthAdminCategoriesCategoryIdIndexRoute:
+      AuthAdminCategoriesCategoryIdIndexRoute,
+  }
+
+const AuthAdminCategoriesRouteRouteWithChildren =
+  AuthAdminCategoriesRouteRoute._addFileChildren(
+    AuthAdminCategoriesRouteRouteChildren,
+  )
+
+interface AuthAdminRouteRouteChildren {
+  AuthAdminCategoriesRouteRoute: typeof AuthAdminCategoriesRouteRouteWithChildren
+  AuthAdminReportsRoute: typeof AuthAdminReportsRoute
+  AuthAdminCategoriesCreateRoute: typeof AuthAdminCategoriesCreateRoute
+}
+
+const AuthAdminRouteRouteChildren: AuthAdminRouteRouteChildren = {
+  AuthAdminCategoriesRouteRoute: AuthAdminCategoriesRouteRouteWithChildren,
+  AuthAdminReportsRoute: AuthAdminReportsRoute,
+  AuthAdminCategoriesCreateRoute: AuthAdminCategoriesCreateRoute,
+}
+
+const AuthAdminRouteRouteWithChildren = AuthAdminRouteRoute._addFileChildren(
+  AuthAdminRouteRouteChildren,
+)
+
+interface AuthClientRouteRouteChildren {
+  AuthClientFilesSplatIndexRoute: typeof AuthClientFilesSplatIndexRoute
+}
+
+const AuthClientRouteRouteChildren: AuthClientRouteRouteChildren = {
+  AuthClientFilesSplatIndexRoute: AuthClientFilesSplatIndexRoute,
+}
+
+const AuthClientRouteRouteWithChildren = AuthClientRouteRoute._addFileChildren(
+  AuthClientRouteRouteChildren,
+)
+
+interface AuthChar123LocaleChar125BlogTopicIdRouteRouteChildren {
+  AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute: typeof AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute
+}
+
+const AuthChar123LocaleChar125BlogTopicIdRouteRouteChildren: AuthChar123LocaleChar125BlogTopicIdRouteRouteChildren =
+  {
+    AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute:
+      AuthChar123LocaleChar125BlogTopicIdPostIdRouteRoute,
+  }
+
+const AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren =
+  AuthChar123LocaleChar125BlogTopicIdRouteRoute._addFileChildren(
+    AuthChar123LocaleChar125BlogTopicIdRouteRouteChildren,
+  )
+
+interface AuthChar123LocaleChar125BlogRouteRouteChildren {
+  AuthChar123LocaleChar125BlogTopicIdRouteRoute: typeof AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren
+}
+
+const AuthChar123LocaleChar125BlogRouteRouteChildren: AuthChar123LocaleChar125BlogRouteRouteChildren =
+  {
+    AuthChar123LocaleChar125BlogTopicIdRouteRoute:
+      AuthChar123LocaleChar125BlogTopicIdRouteRouteWithChildren,
+  }
+
+const AuthChar123LocaleChar125BlogRouteRouteWithChildren =
+  AuthChar123LocaleChar125BlogRouteRoute._addFileChildren(
+    AuthChar123LocaleChar125BlogRouteRouteChildren,
+  )
+
+interface AuthRouteRouteChildren {
+  AuthAdminRouteRoute: typeof AuthAdminRouteRouteWithChildren
+  AuthClientRouteRoute: typeof AuthClientRouteRouteWithChildren
+  AuthChar123LocaleChar125BlogRouteRoute: typeof AuthChar123LocaleChar125BlogRouteRouteWithChildren
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAdminRouteRoute: AuthAdminRouteRouteWithChildren,
+  AuthClientRouteRoute: AuthClientRouteRouteWithChildren,
+  AuthChar123LocaleChar125BlogRouteRoute:
+    AuthChar123LocaleChar125BlogRouteRouteWithChildren,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 interface ContactUsCountryRouteChildren {
   ContactUsCountryCityRoute: typeof ContactUsCountryCityRoute
@@ -156,10 +578,58 @@ const ContactUsRouteWithChildren = ContactUsRoute._addFileChildren(
   ContactUsRouteChildren,
 )
 
+interface publicCategoriesCategoryIdSubcategoryIdRouteRouteChildren {
+  publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute: typeof publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute
+}
+
+const publicCategoriesCategoryIdSubcategoryIdRouteRouteChildren: publicCategoriesCategoryIdSubcategoryIdRouteRouteChildren =
+  {
+    publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute:
+      publicCategoriesCategoryIdSubcategoryIdProductIdRouteRoute,
+  }
+
+const publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren =
+  publicCategoriesCategoryIdSubcategoryIdRouteRoute._addFileChildren(
+    publicCategoriesCategoryIdSubcategoryIdRouteRouteChildren,
+  )
+
+interface publicCategoriesCategoryIdRouteRouteChildren {
+  publicCategoriesCategoryIdSubcategoryIdRouteRoute: typeof publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren
+}
+
+const publicCategoriesCategoryIdRouteRouteChildren: publicCategoriesCategoryIdRouteRouteChildren =
+  {
+    publicCategoriesCategoryIdSubcategoryIdRouteRoute:
+      publicCategoriesCategoryIdSubcategoryIdRouteRouteWithChildren,
+  }
+
+const publicCategoriesCategoryIdRouteRouteWithChildren =
+  publicCategoriesCategoryIdRouteRoute._addFileChildren(
+    publicCategoriesCategoryIdRouteRouteChildren,
+  )
+
+interface publicCategoriesRouteRouteChildren {
+  publicCategoriesCategoryIdRouteRoute: typeof publicCategoriesCategoryIdRouteRouteWithChildren
+}
+
+const publicCategoriesRouteRouteChildren: publicCategoriesRouteRouteChildren = {
+  publicCategoriesCategoryIdRouteRoute:
+    publicCategoriesCategoryIdRouteRouteWithChildren,
+}
+
+const publicCategoriesRouteRouteWithChildren =
+  publicCategoriesRouteRoute._addFileChildren(
+    publicCategoriesRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactUsRoute: ContactUsRouteWithChildren,
+  LoginRoute: LoginRoute,
+  publicCategoriesRouteRoute: publicCategoriesRouteRouteWithChildren,
+  publicSearchRouteRoute: publicSearchRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

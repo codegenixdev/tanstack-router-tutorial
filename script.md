@@ -1,6 +1,7 @@
 # TODO:
 
 . & .. in navigation
+refer to devtools
 
 # Script
 
@@ -225,8 +226,47 @@ export const NavLink: LinkComponent<typeof BasicLinkComponent> = (props) => {
 ```
 
 ```tsx __root.tsx
-<NavLink to="/">Main Page</NavLink>
-<NavLink to="/about">About Page</NavLink>
+import * as React from "react";
+import {
+  Outlet,
+  createRootRouteWithContext,
+  useLocation,
+} from "@tanstack/react-router";
+import { NavLink } from "@/routes/-components/nav-link";
+
+// export const Route = createRootRoute({
+//   component: RootComponent,
+// });
+
+export type UserRole = "admin" | "client" | null;
+export type RouterContext = {
+  role: UserRole;
+  login: (role: "admin" | "client") => void;
+  logout: () => void;
+  isAdmin: boolean;
+  isClient: boolean;
+  isAuthenticated: boolean;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootComponent,
+});
+
+function RootComponent() {
+  const { logout, isAuthenticated, isAdmin, isClient } =
+    Route.useRouteContext();
+  const navigate = Route.useNavigate();
+  const location = useLocation();
+
+  return (
+    <div className="container mx-auto max-w-xl">
+      <div className="space-x-2">
+        <NavLink to="/">Main Page</NavLink>
+        <NavLink to="/about">About Page</NavLink>
+      </div>
+    </div>
+  );
+}
 ```
 
 ```ts lib/mock.ts
@@ -829,6 +869,7 @@ function RouteComponent() {
 ```
 
 add start and end console log for $country loader then inside contact-us add preload="intent" and show when hover what happens and also show at app.tsx that can be globally config
+also add and show devtools to root.tsx and explain a little what happens
 
 ```tsx $city.tsx
 import { getCities } from "@/lib/mock";
@@ -863,3 +904,1113 @@ if notice, there is no loading because delay is 1s, increase to 3s and show that
 add defaultPendingMs: 0, to default config and explain then change 3000 to 1000 on wait function
 
 tell about parallel fetching
+
+create these
+
+```bash
+(public)/categories/route.tsx
+(public)/categories/$categoryId/route.tsx
+(public)/categories/$categoryId/$subcategoryId/route.tsx
+(public)/categories/$categoryId/$subcategoryId/$productId/route.tsx
+```
+
+add categories navlink to root
+
+```tsx categories/route.tsx
+import { getCategories } from "@/lib/mock";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/(public)/categories")({
+  component: RouteComponent,
+  loader: async () => {
+    const categories = await getCategories();
+    return { categories };
+  },
+  pendingComponent: () => <div>Categories are loading...</div>,
+  errorComponent: () => <div>Error...</div>,
+});
+
+function RouteComponent() {
+  const { categories } = Route.useLoaderData();
+  return (
+    <div className="space-y-3">
+      <h2 className="heading">Categories:</h2>
+      <div className="list">
+        {categories.map((category) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            to="/categories/$categoryId"
+            params={{ categoryId: category.id }}
+            key={category.id}
+          >
+            <p className="title">{category.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx $categoryId/route.tsx
+import { getSubcategories } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  Outlet,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/(public)/categories/$categoryId")({
+  component: RouteComponent,
+  loader: async ({ params: { categoryId } }) => {
+    const subcategories = await getSubcategories(categoryId);
+    if (subcategories.length === 0) {
+      throw notFound();
+    }
+    return { subcategories };
+  },
+  pendingComponent: () => <div>Subcategories are loading...</div>,
+});
+
+function RouteComponent() {
+  const { subcategories } = Route.useLoaderData();
+  return (
+    <div className="space-y-3">
+      <h2 className="heading">Subcategories:</h2>
+      <div className="list">
+        {subcategories.map((subcategory) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "active-card",
+            }}
+            from="/categories/$categoryId"
+            to="/categories/$categoryId/$subcategoryId"
+            params={{ subcategoryId: subcategory.id }}
+            key={subcategory.id}
+          >
+            <p className="title">{subcategory.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx $subcategoryId/route.tsx
+import { getProducts } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  Outlet,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute(
+  "/(public)/categories/$categoryId/$subcategoryId"
+)({
+  component: RouteComponent,
+  loader: async ({ params: { subcategoryId } }) => {
+    const products = await getProducts(subcategoryId);
+    if (products.length === 0) {
+      throw notFound();
+    }
+    return { products };
+  },
+  pendingComponent: () => <div>Products are loading...</div>,
+});
+
+function RouteComponent() {
+  const { products } = Route.useLoaderData();
+
+  return (
+    <div className="space-y-3">
+      <h2 className="heading">Products:</h2>
+      <div className="list">
+        {products.map((product) => (
+          <Link
+            className="card"
+            activeProps={{
+              className: "bg-gray-200",
+            }}
+            from="/categories/$categoryId/$subcategoryId"
+            to="/categories/$categoryId/$subcategoryId/$productId"
+            params={{
+              productId: product.id.toString(),
+            }}
+            hash="product-details"
+            key={product.id}
+          >
+            <p className="title">{product.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx $productId/route.tsx
+import { getProduct } from "@/lib/mock";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+
+export const Route = createFileRoute(
+  "/(public)/categories/$categoryId/$subcategoryId/$productId"
+)({
+  component: RouteComponent,
+  loader: async ({ params: { productId } }) => {
+    const product = await getProduct(productId);
+    if (!product) {
+      throw notFound();
+    }
+    return { product };
+  },
+  pendingComponent: () => <div>Product is loading...</div>,
+});
+
+function RouteComponent() {
+  const { product } = Route.useLoaderData();
+  return (
+    <>
+      <h2 className="heading">Product Details:</h2>
+      <div id="product-details" className="card">
+        <p className="title">{product.name}</p>
+        <p className="price">${product.price}</p>
+        <p className="description">{product.description}</p>
+      </div>
+    </>
+  );
+}
+```
+
+don't forget to show hash scrolling for product details
+
+```tsx search/route.tsx
+import { searchProducts } from "@/lib/mock";
+import { FilterPanel } from "@/routes/(public)/search/-components/filter-panel";
+import { searchSchema } from "@/routes/(public)/search/-types/searchSchema";
+import { createFileRoute, Link } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/(public)/search")({
+  component: RouteComponent,
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({ search }),
+  loader: async ({ deps: { search } }) => {
+    const products = await searchProducts(search);
+    return { products };
+  },
+});
+
+function RouteComponent() {
+  // show also an example o getRouterApi
+  const { products } = Route.useLoaderData();
+
+  return (
+    <>
+      <FilterPanel />
+      <div className="list">
+        {products.map((product) => (
+          <Link
+            className="card"
+            to="/categories/$categoryId/$subcategoryId/$productId"
+            params={{
+              productId: product.id,
+              categoryId: product.categoryId,
+              subcategoryId: product.subcategoryId,
+            }}
+            key={product.id}
+          >
+            <p className="title">{product.name}</p>
+            <p className="description">{product.description}</p>
+            <p className="price">{product.price}</p>
+          </Link>
+        ))}
+      </div>
+    </>
+  );
+}
+```
+
+```tsx search/-types/searchSchema.ts
+import z from "zod";
+
+export const sortOptions = {
+  alphabeticalAsc: "alphabeticalAsc",
+  alphabeticalDesc: "alphabeticalDesc",
+} as const;
+// show that if error, url correctly redirect to catch
+export const searchSchema = z.object({
+  page: z.number().default(1).catch(1),
+  filter: z.string().default("").catch(""),
+  sort: z.enum(sortOptions).default("alphabeticalAsc").catch("alphabeticalAsc"),
+});
+
+export type SearchParams = z.infer<typeof searchSchema>;
+```
+
+```bash
+npm i zod
+```
+
+```tsx search/-components/filter-panel.tsx
+import {
+  sortOptions,
+  type SearchParams,
+} from "@/routes/(public)/search/-types/searchSchema";
+import { getRouteApi, Link } from "@tanstack/react-router";
+import { useState } from "react";
+
+const searchRouterApi = getRouteApi("/(public)/search");
+const FilterPanel = () => {
+  const { filter, page, sort } = searchRouterApi.useSearch();
+  const [filterInput, setFilterInput] = useState(filter);
+  const [pageInput, setPageInput] = useState(page.toString());
+
+  const getSearchParams = (updates: Partial<SearchParams>) => {
+    return {
+      filter: updates.filter !== undefined ? updates.filter : filter,
+      page: updates.page !== undefined ? updates.page : page,
+      sort: updates.sort !== undefined ? updates.sort : sort,
+    };
+  };
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <label className="label">
+          Filter:
+          <input
+            className="input"
+            type="text"
+            value={filterInput}
+            onChange={(e) => setFilterInput(e.target.value)}
+          />
+        </label>
+        <Link
+          className="outlined-button"
+          to="/search"
+          search={getSearchParams({ filter: filterInput })}
+        >
+          Apply Filter
+        </Link>
+      </div>
+
+      <div>
+        <label className="label">
+          Page:
+          <input
+            className="input"
+            type="number"
+            min="1"
+            value={pageInput}
+            onChange={(e) => setPageInput(e.target.value)}
+          />
+        </label>
+        <div className="space-x-2 inline">
+          <Link
+            className="outlined-button"
+            to="/search"
+            search={getSearchParams({ page: parseInt(pageInput) || 1 })}
+          >
+            Go to Page
+          </Link>
+
+          <Link
+            className="outlined-button"
+            to="/search"
+            search={getSearchParams({ page: Math.max(1, page - 1) })}
+            disabled={page <= 1}
+          >
+            Previous
+          </Link>
+          <Link
+            className="outlined-button"
+            to="/search"
+            search={getSearchParams({ page: page + 1 })}
+          >
+            Next
+          </Link>
+        </div>
+      </div>
+
+      <div className="space-x-2">
+        <label className="label">Sort:</label>
+        {Object.values(sortOptions).map((sortOption) => (
+          <Link
+            className="outlined-button"
+            to="/search"
+            search={getSearchParams({ sort: sortOption })}
+            key={sortOption}
+          >
+            {sortOption.charAt(0).toUpperCase() + sortOption.slice(1)}
+          </Link>
+        ))}
+      </div>
+
+      <pre className="code">
+        {JSON.stringify({ filter, page, sort }, null, 2)}
+      </pre>
+    </div>
+  );
+};
+
+export { FilterPanel };
+```
+
+add search to \_\_root.tsx and show
+
+add context
+
+```tsx __root.tsx
+import * as React from "react";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { NavLink } from "@/routes/-components/nav-link";
+
+// export const Route = createRootRoute({
+//   component: RootComponent,
+// });
+
+export type UserRole = "admin" | "client" | null;
+export type RouterContext = {
+  role: UserRole;
+  login: (role: "admin" | "client") => void;
+  logout: () => void;
+  isAdmin: boolean;
+  isClient: boolean;
+  isAuthenticated: boolean;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootComponent,
+});
+
+function RootComponent() {
+  // for now tell we can use these after implement from anywhere
+  // const { logout, isAuthenticated, isAdmin, isClient } =
+  //   Route.useRouteContext();
+
+  return (
+    <React.Fragment>
+      <NavLink to="/">Main Page</NavLink>
+      <NavLink to="/about">About Page</NavLink>
+      <NavLink to="/contact-us">Contact Us</NavLink>
+      <NavLink to="/categories">Categories</NavLink>
+      <NavLink to="/search">Search</NavLink>
+      <Outlet />
+    </React.Fragment>
+  );
+}
+```
+
+```tsx app.tsx
+import { useRouterContextState } from "@/lib/use-router-context-state";
+import { routeTree } from "@/routeTree.gen";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+
+const router = createRouter({
+  routeTree,
+  defaultPreload: "intent",
+  defaultStaleTime: 5000,
+  scrollRestoration: true,
+  context: {
+    role: null,
+    login: () => {},
+    logout: () => {},
+    isAdmin: false,
+    isClient: false,
+    isAuthenticated: false,
+  },
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+function App() {
+  const routerContextState = useRouterContextState();
+  return <RouterProvider router={router} context={routerContextState} />;
+}
+
+export default App;
+```
+
+```tsx lib/use-router-context-state.tsx
+import type { RouterContext, UserRole } from "@/routes/__root";
+import { useState, useEffect } from "react";
+
+export function useRouterContextState(): RouterContext {
+  const [role, setRole] = useState<UserRole>(() => {
+    const savedRole = localStorage.getItem("userRole") as UserRole;
+    return savedRole || null;
+  });
+
+  useEffect(() => {
+    if (role) {
+      localStorage.setItem("userRole", role);
+    } else {
+      localStorage.removeItem("userRole");
+    }
+  }, [role]);
+
+  const login = (newRole: "admin" | "client") => {
+    setRole(newRole);
+  };
+
+  const logout = () => {
+    setRole(null);
+  };
+
+  const isAdmin = role === "admin";
+  const isClient = role === "client";
+  const isAuthenticated = !!role;
+
+  return {
+    role,
+    login,
+    logout,
+    isAdmin,
+    isClient,
+    isAuthenticated,
+  };
+}
+```
+
+```tsx routes/login.tsx
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import z from "zod";
+
+export const Route = createFileRoute("/login")({
+  component: RouteComponent,
+  validateSearch: z.object({
+    redirect: z.string().default("/"),
+  }),
+  beforeLoad: async ({ context, search }) => {
+    const { isAdmin, isAuthenticated } = context;
+    if (isAuthenticated) {
+      throw redirect({
+        to: search.redirect || (isAdmin ? "/admin" : "/client"),
+      });
+    }
+  },
+  pendingComponent: () => <div>Loading...</div>,
+});
+
+function RouteComponent() {
+  const { login } = Route.useRouteContext();
+  const router = useRouter();
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [username, setUsername] = useState("");
+  return (
+    <form>
+      <input
+        className="input"
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        autoFocus
+      />
+      <button
+        className="button"
+        type="submit"
+        onClick={() => {
+          if (username === "admin") {
+            login("admin");
+          } else {
+            login("client");
+          }
+          router.invalidate();
+          navigate({ to: search.redirect });
+        }}
+      >
+        Login
+      </button>
+    </form>
+  );
+}
+```
+
+```tsx __root.tsx
+import * as React from "react";
+import {
+  Outlet,
+  createRootRouteWithContext,
+  useLocation,
+} from "@tanstack/react-router";
+import { NavLink } from "@/routes/-components/nav-link";
+
+// export const Route = createRootRoute({
+//   component: RootComponent,
+// });
+
+export type UserRole = "admin" | "client" | null;
+export type RouterContext = {
+  role: UserRole;
+  login: (role: "admin" | "client") => void;
+  logout: () => void;
+  isAdmin: boolean;
+  isClient: boolean;
+  isAuthenticated: boolean;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootComponent,
+});
+
+function RootComponent() {
+  const { logout, isAuthenticated, isAdmin, isClient } =
+    Route.useRouteContext();
+  const navigate = Route.useNavigate();
+  const location = useLocation();
+
+  return (
+    <React.Fragment>
+      <div className="space-x-2">
+        <NavLink to="/">Main Page</NavLink>
+        <NavLink to="/about">About Page</NavLink>
+        <NavLink to="/contact-us">Contact Us</NavLink>
+        <NavLink to="/categories">Categories</NavLink>
+        <NavLink to="/search">Search</NavLink>
+        <NavLink to="/{-$locale}/blog">Blog</NavLink>
+        {isClient && <NavLink to="/client">Account</NavLink>}
+        {isAdmin && <NavLink to="/admin">Admin</NavLink>}
+        {isAuthenticated ? (
+          <button
+            className="button"
+            onClick={() => {
+              logout();
+              navigate({ to: "/login", search: { redirect: location.href } });
+            }}
+          >
+            Sign out
+          </button>
+        ) : (
+          <NavLink to="/login">Login</NavLink>
+        )}
+      </div>
+      <Outlet />
+    </React.Fragment>
+  );
+}
+```
+
+```tsx _auth/route.tsx
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth")({
+  component: RouteComponent,
+  beforeLoad: async ({ context, location }) => {
+    if (!context.isAuthenticated) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return <Outlet />;
+}
+```
+
+```tsx _auth/admin/routes.tsx
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin")({
+  component: RouteComponent,
+  beforeLoad: async ({ context }) => {
+    if (!context.isAdmin) {
+      throw redirect({
+        to: "/client",
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return <Outlet />;
+}
+```
+
+```tsx _auth/client/routes.tsx
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/client")({
+  component: RouteComponent,
+  beforeLoad: async ({ context }) => {
+    if (!context.isClient) {
+      throw redirect({
+        to: "/admin",
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return <Outlet />;
+}
+```
+
+```tsx client/files/$/index.tsx
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+
+export const Route = createFileRoute("/_auth/client/files/$/")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { _splat } = Route.useParams();
+  const [filepath, setFilepath] = useState(_splat);
+
+  return (
+    <>
+      <input
+        className="input"
+        type="text"
+        value={filepath}
+        onChange={(e) => setFilepath(e.target.value)}
+      />
+      <Link
+        className="button"
+        to="/client/files/$"
+        params={{ _splat: filepath }}
+      >
+        Go to file
+      </Link>
+      {_splat ? (
+        <h2 className="title">File: {_splat}</h2>
+      ) : (
+        <h2 className="title">No file found</h2>
+      )}
+    </>
+  );
+}
+```
+
+```tsx client/route.tsx
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/client")({
+  component: RouteComponent,
+  beforeLoad: async ({ context }) => {
+    if (!context.isClient) {
+      throw redirect({
+        to: "/admin",
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return (
+    <>
+      <Link className="nav-link" to="/client/files/$">
+        Files
+      </Link>
+      <Outlet />
+    </>
+  );
+}
+```
+
+```tsx admin/reports.tsx
+import { getReports } from "@/lib/mock";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin/reports")({
+  component: RouteComponent,
+  loader: async () => {
+    const reports = await getReports();
+    return { reports };
+  },
+});
+
+function RouteComponent() {
+  const { reports } = Route.useLoaderData();
+  return (
+    <div className="space-y-2">
+      <p className="text-2xl font-bold">Reports:</p>
+      <div className="card">Total Sales: {reports.totalSales}</div>
+      <div className="card">Total Orders: {reports.totalOrders}</div>
+      <div className="card">Total Customers: {reports.totalCustomers}</div>
+      <div className="card">Total Products: {reports.totalProducts}</div>
+    </div>
+  );
+}
+```
+
+```tsx admin/route.tsx
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin")({
+  component: RouteComponent,
+  beforeLoad: async ({ context }) => {
+    if (!context.isAdmin) {
+      throw redirect({
+        to: "/client",
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return (
+    <div className="space-x-2 space-y-3">
+      <Link
+        className="card"
+        activeProps={{ className: "active-card" }}
+        to="/admin/reports"
+      >
+        Reports
+      </Link>
+
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```bash
+create these
+admin/categories/routes.tsx
+admin/categories/$categoryId/index.tsx
+```
+
+```tsx categories/route.tsx
+import { getCategories } from "@/lib/mock";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin/categories")({
+  component: RouteComponent,
+  loader: async () => {
+    const categories = await getCategories();
+    return { categories };
+  },
+});
+
+function RouteComponent() {
+  const { categories } = Route.useLoaderData();
+  return (
+    <>
+      <div className="heading">Categories:</div>
+      <div className="list">
+        {categories.map((category) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            to="/admin/categories/$categoryId"
+            params={{ categoryId: category.id.toString() }}
+            key={category.id}
+          >
+            <p className="title">{category.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </>
+  );
+}
+```
+
+```tsx categories/$categoryId/index.tsx
+import { getCategory } from "@/lib/mock";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin/categories/$categoryId/")({
+  component: RouteComponent,
+  loader: async ({ params: { categoryId } }) => {
+    const category = await getCategory(categoryId);
+    if (!category) {
+      throw notFound();
+    }
+    return { category };
+  },
+});
+
+function RouteComponent() {
+  const { category } = Route.useLoaderData();
+  return (
+    <div className="space-y-3">
+      <div className="heading">Category:</div>
+      <p className="title">{category?.name}</p>
+    </div>
+  );
+}
+```
+
+```tsx admin/route.tsx
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin")({
+  component: RouteComponent,
+  beforeLoad: async ({ context }) => {
+    if (!context.isAdmin) {
+      throw redirect({
+        to: "/client",
+      });
+    }
+  },
+});
+
+function RouteComponent() {
+  return (
+    <div className="space-x-2 space-y-3">
+      <Link
+        className="card"
+        activeProps={{ className: "active-card" }}
+        to="/admin/reports"
+      >
+        Reports
+      </Link>
+
+      <Link
+        className="card"
+        activeProps={{ className: "active-card" }}
+        activeOptions={{ exact: true }}
+        to="/admin/categories"
+      >
+        Categories
+      </Link>
+
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx categories_.create.tsx
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin/categories_/create")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  return <div>Create Category</div>;
+}
+```
+
+```tsx admin/categories/route.tsx
+import { getCategories } from "@/lib/mock";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/admin/categories")({
+  component: RouteComponent,
+  loader: async () => {
+    const categories = await getCategories();
+    return { categories };
+  },
+});
+
+function RouteComponent() {
+  const { categories } = Route.useLoaderData();
+  return (
+    <>
+      <Link className="button" to="/admin/categories/create">
+        New Category
+      </Link>
+      <div className="heading">Categories:</div>
+      <div className="list">
+        {categories.map((category) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            to="/admin/categories/$categoryId"
+            params={{ categoryId: category.id.toString() }}
+            key={category.id}
+          >
+            <p className="title">{category.name}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </>
+  );
+}
+```
+
+```bash
+create these
+_auth/{$locale}/blog/route.tsx
+_auth/{$locale}/blog/$topicId/route.tsx
+_auth/{$locale}/blog/$topicId/$postId/route.tsx
+```
+
+```tsx blog/route.tsx
+import { getTopics, LOCALES, type Locale } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/{-$locale}/blog")({
+  component: RouteComponent,
+  loader: async ({ params: { locale } }) => {
+    if (!["en", "fr", "es"].includes(locale ?? "en")) {
+      throw redirect({ to: "/{-$locale}/blog", params: { locale: undefined } });
+    }
+    const topics = await getTopics(locale as Locale);
+    return { topics };
+  },
+  pendingComponent: () => <div>Topics are loading...</div>,
+});
+
+function RouteComponent() {
+  const { topics } = Route.useLoaderData();
+  const { locale } = Route.useParams();
+
+  return (
+    <div className="space-y-2">
+      <h1 className="heading">Blog</h1>
+      <p className="label">Select your language</p>
+
+      <div className="space-x-2">
+        {LOCALES.map((item) => (
+          <Link
+            className={`outlined-button ${!locale && item === "en" ? "bg-green-500 text-white" : ""}`}
+            activeProps={{ className: "bg-green-500 text-white" }}
+            to="/{-$locale}/blog"
+            params={{ locale: item }}
+            key={item}
+          >
+            {item}
+          </Link>
+        ))}
+      </div>
+      <h2 className="heading">Topics:</h2>
+      <div className="list">
+        {topics.map((topic) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            to="/{-$locale}/blog/$topicId"
+            params={{ topicId: topic.id.toString() }}
+            key={topic.id}
+          >
+            <p className="title">{topic.name}</p>
+            <p className="description">
+              {topic.posts.map((post) => post.title).join(", ")}
+            </p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+```tsx blog/$topicId/route.tsx
+import { getTopic } from "@/lib/mock";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  Outlet,
+} from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/{-$locale}/blog/$topicId")({
+  component: RouteComponent,
+  loader: async ({ params: { topicId } }) => {
+    const topic = await getTopic(topicId);
+    if (!topic) {
+      throw notFound();
+    }
+    return { topic };
+  },
+  pendingComponent: () => <div>Posts are loading...</div>,
+});
+
+function RouteComponent() {
+  const { topic } = Route.useLoaderData();
+  return (
+    <>
+      <h2 className="heading">Posts:</h2>
+      <div className="list">
+        {topic?.posts.map((post) => (
+          <Link
+            className="card"
+            activeProps={{ className: "active-card" }}
+            from="/{-$locale}/blog/$topicId"
+            to="/{-$locale}/blog/$topicId/$postId"
+            params={{ postId: post.id }}
+            key={post.id}
+          >
+            <p className="title">{post.title}</p>
+          </Link>
+        ))}
+      </div>
+      <Outlet />
+    </>
+  );
+}
+```
+
+```tsx blog/$topicId/$postId/route.tsx
+import { getPost } from "@/lib/mock";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_auth/{-$locale}/blog/$topicId/$postId")(
+  {
+    component: RouteComponent,
+    loader: async ({ params: { postId } }) => {
+      // add some console logs for post route that when hover, it starts loading
+      const post = await getPost(postId);
+      if (!post) {
+        throw notFound();
+      }
+      return { post };
+    },
+    pendingComponent: () => <div>Post is loading...</div>,
+  }
+);
+
+function RouteComponent() {
+  const { post } = Route.useLoaderData();
+  return (
+    <>
+      <h1 className="heading">Post:</h1>
+      <p className="title">{post?.title}</p>
+      <p className="description">{post?.description}</p>
+    </>
+  );
+}
+```
